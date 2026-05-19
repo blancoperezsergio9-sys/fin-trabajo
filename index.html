@@ -38,7 +38,7 @@
         const learningStyles = ["Reto Individual", "Cooperativo", "Descubrimiento Guiado", "Asignación de Tareas", "Resolución de Problemas"];
         const currentMissions = ["El vuelo del proyectil", "La senda del ninja", "Equilibrio en el abismo", "El circuito de postas", "Lanzamiento con diana"];
         
-        // Ludoteca interactiva de iniciación deportiva
+        // Ludoteca interactiva de iniciación deportiva (Textos limpios sin comillas conflictivas)
         const ludotecaJuegos = [
             { id: 1, name: "Canguros al rescate", objetivo: "Locomoción (Saltos plyométricos)", desc: "Los niños deben cruzar el espacio saltando a pies juntos dentro de aros. Si se cae un aro, un compañero debe reponerlo.", variante: "Añadir lanzamientos de saquitos de arena mientras saltan.", icono: "🦘" },
             { id: 2, name: "El Pañuelo Multimotor", objetivo: "Velocidad de reacción y Agilidad", desc: "Al decir su número, los alumnos deben salir corriendo, esquivar tres conos en zigzag y atrapar el pañuelo.", variante: "El regreso al origen se hace con cuadrupedia o pata coja.", icono: "🎽" },
@@ -58,9 +58,9 @@
                     style: learningStyles[(index + 2) % learningStyles.length],
                     mission: currentMissions[index % currentMissions.length],
                     skills: {
-                        locomocion: 40 + (index * 8) % 55,      // Carreras, saltos, giros
-                        estabilidad: 45 + (index * 6) % 50,     // Equilibrio, balance, postura
-                        manipulacion: 35 + (index * 11) % 60    // Lanzamientos, recepciones
+                        locomocion: 40 + (index * 8) % 55,
+                        estabilidad: 45 + (index * 6) % 50,
+                        manipulacion: 35 + (index * 11) % 60
                     }
                 }))
             };
@@ -73,7 +73,7 @@
         ];
 
         const educationalTips = [
-            "La variabilidad en la práctica es clave: Cambiar los tamaños de los balones y las superficies estimula la plasticidad cerebral de los niños.",
+            "La variabilidad en la práctica es clave: Cambiar los tamaños de los balones y las superficies de juego estimula la plasticidad cerebral de los niños.",
             "Evita el feedback directivo masivo. Deja que el niño cometa el error motor para que reajuste su esquema corporal de forma autónoma.",
             "Estudios en neuroeducación física confirman que el juego cooperativo aumenta los niveles de dopamina, fijando mejor los patrones de movimiento.",
             "El desarrollo biológico y la edad cronológica rara vez coinciden. Un niño de 8 años puede tener una maduración motriz de uno de 11.",
@@ -198,7 +198,7 @@
                                 <div className="bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 p-4 rounded-2xl mb-4">
                                     <div className="text-[10px] font-bold text-indigo-600 uppercase tracking-wide">Foco de Variabilidad Motriz</div>
                                     <div className="font-bold text-slate-800 dark:text-white text-base mt-1">{selectedAthlete.mission}</div>
-                                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Metodología adaptada al estilo de **{selectedAthlete.style}** para optimizar el aprendizaje sin saturar el sistema nervioso.</p>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Metodología adaptada para optimizar el aprendizaje sin saturar el sistema nervioso del menor.</p>
                                 </div>
                             </div>
                             <div className="border-t border-slate-100 dark:border-slate-800 pt-4">
@@ -276,7 +276,7 @@
                                             </button>
                                             <button onClick={() => handleProgress(athlete.id, 'excelente')} className={`flex flex-col items-center p-2 rounded-xl border transition-all text-center ${currentStatus === 'excelente' ? 'bg-purple-50 dark:bg-purple-950/30 border-purple-400 text-purple-700 dark:text-purple-400 font-bold' : 'border-slate-100 dark:border-slate-800 text-slate-400'}`}>
                                                 <span className="text-base">✨</span>
-                                                <span className="text-[9px] mt-0.5">S. Sobresaliente</span>
+                                                <span className="text-[9px] mt-0.5">Sobresaliente</span>
                                             </button>
                                         </div>
                                     </div>
@@ -293,8 +293,8 @@
             const [activeJuego, setActiveJuego] = useState(ludotecaJuegos[0]);
 
             const dynamicFeed = [
-                { id: 1, text: `Ha completado con éxito la tarea formativa de '${selectedAthlete.mission}'. Se observa un avance notable en los esquemas propioceptivos de su tren inferior.`, time: "Esta tarde", icon: "💎" },
-                { id: 2, text: `Muestra una gran predisposición hacia el estilo de aprendizaje '${selectedAthlete.style}', guiando de manera positiva a sus compañeros de grupo.`, time: "Ayer en sesión", icon: "🛡️" }
+                { id: 1, text: "Ha completado con éxito la tarea formativa asignada. Se observa un avance notable en los esquemas propioceptivos de su tren inferior.", time: "Esta tarde", icon: "💎" },
+                { id: 2, text: "Muestra una gran predisposición hacia las actividades planteadas, guiando de manera positiva a sus compañeros de grupo.", time: "Ayer en sesión", icon: "🛡️" }
             ];
 
             return (
@@ -347,4 +347,93 @@
 
                             <div className="mt-3 bg-slate-50 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-100/50 dark:border-slate-800">
                                 <div className="text-xs font-bold text-indigo-600 mb-0.5">{activeJuego.name}</div>
-                                <div className="text-[10px] font-
+                                <div className="text-[10px] font-mono font-bold text-emerald-600 mb-1.5">{activeJuego.objective || activeJuego.objetivo}</div>
+                                <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">{activeJuego.desc}</p>
+                                <div className="mt-2 pt-2 border-t border-dashed border-slate-200 dark:border-slate-700">
+                                    <span className="text-[10px] font-bold text-amber-600 uppercase">Variante Pro:</span>
+                                    <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">{activeJuego.variante}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        function DecaKidsApp() {
+            const [currentView, setCurrentView] = useState('athlete');
+            const [isDarkMode, setIsDarkMode] = useState(false);
+            
+            const [classIdx, setClassIdx] = useState(1);
+            const [athleteId, setAthleteId] = useState(4);
+
+            const activeClass = classesDataset[classIdx];
+            const activeAthlete = activeClass.athletes.find(a => a.id === athleteId) || activeClass.athletes[0];
+
+            const handleClassChange = (newIdx) => {
+                setClassIdx(newIdx);
+                setAthleteId(1);
+            };
+
+            return (
+                <div className={isDarkMode ? 'dark' : ''}>
+                    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 pb-12 transition-colors">
+                        
+                        {/* Menú Superior Avanzado */}
+                        <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-20 shadow-sm">
+                            <div className="max-w-4xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
+                                <div className="flex items-center justify-between w-full sm:w-auto">
+                                    <div className="flex items-center gap-2">
+                                        <div className="bg-indigo-600 text-white p-1.5 rounded-lg text-sm font-black">DK</div>
+                                        <h1 className="text-lg font-black tracking-tight">Deca<span className="text-indigo-600">Kids</span> <span className="text-xs text-slate-400 font-mono font-medium">v2.1</span></h1>
+                                    </div>
+                                    <button onClick={() => setIsDarkMode(!isDarkMode)} className="sm:hidden p-2 text-sm">
+                                        {isDarkMode ? '☀️' : '🌙'}
+                                    </button>
+                                </div>
+                                <div className="flex items-center gap-3 w-full sm:w-auto justify-center">
+                                    <nav className="flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-bold w-full sm:w-auto justify-between">
+                                        <button onClick={() => setCurrentView('athlete')} className={`px-4 py-2 rounded-lg transition-all ${currentView === 'athlete' ? 'bg-white dark:bg-slate-900 shadow text-indigo-600 font-black' : 'text-slate-500'}`}>👤 Ficha Alumno</button>
+                                        <button onClick={() => setCurrentView('coach')} className={`px-4 py-2 rounded-lg transition-all ${currentView === 'coach' ? 'bg-white dark:bg-slate-900 shadow text-indigo-600 font-black' : 'text-slate-500'}`}>📋 Eval. Docente</button>
+                                        <button onClick={() => setCurrentView('family')} className={`px-4 py-2 rounded-lg transition-all ${currentView === 'family' ? 'bg-white dark:bg-slate-900 shadow text-indigo-600 font-black' : 'text-slate-500'}`}>👨‍👩‍👧 Familia / Juegos</button>
+                                    </nav>
+                                    <button onClick={() => setIsDarkMode(!isDarkMode)} className="hidden sm:block p-2 text-sm">
+                                        {isDarkMode ? '☀️' : '🌙'}
+                                    </button>
+                                </div>
+                            </div>
+                        </header>
+
+                        {/* Contenedor Principal */}
+                        <main className="max-w-4xl mx-auto px-4 py-6">
+                            {currentView === 'athlete' && (
+                                <AthleteProfile 
+                                    selectedClass={activeClass} 
+                                    selectedAthlete={activeAthlete}
+                                    onClassChange={handleClassChange}
+                                    onAthleteChange={setAthleteId}
+                                    isDarkMode={isDarkMode} 
+                                />
+                            )}
+                            {currentView === 'coach' && (
+                                <CoachDashboard 
+                                    selectedClass={activeClass} 
+                                    onClassChange={handleClassChange} 
+                                />
+                            )}
+                            {currentView === 'family' && (
+                                <FamilyView 
+                                    selectedAthlete={activeAthlete} 
+                                />
+                            )}
+                        </main>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<DecaKidsApp />);
+    </script>
+</body>
+</html>
