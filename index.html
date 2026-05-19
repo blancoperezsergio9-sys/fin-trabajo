@@ -1,377 +1,279 @@
-import React, { useState, useEffect } from 'react';
-import {
-User, Users, Activity, Shield, Trophy, AlertCircle, CheckCircle2,
-Target, Info, Rocket, Zap, RefreshCw, Check, Sparkles, Flame,
-Sun, Moon, BookOpen, Award, Smile, Heart
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DecaKids - Iniciación Deportiva</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/lucide-react"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 transition-colors duration-200">
 
-// --- MOCK DATA (Datos Falsos) ---
-const mockData = {
-coach: {
-name: "Entrenadora Marta",
-team: "Grupo Base Sub-10",
-athletes: [
-{ id: 101, name: "Hugo T.", profile: "Medio fondo", mission: "El desafío del canguro 🦘", focus: "Saltos continuos y ritmo" },
-{ id: 102, name: "Sofía M.", profile: "Agilidad", mission: "Circuito Ninja 🥷", focus: "Cambios de dirección" },
-{ id: 103, name: "Mateo R.", profile: "Fuerza base", mission: "Lanzamiento de Cohete 🚀", focus: "Transferencia de fuerza" },
-{ id: 104, name: "Leo G.", profile: "Equilibrado", mission: "Atrapa la bandera 🚩", focus: "Velocidad de reacción" }
-]
-},
-badges: [
-{ id: 1, name: "Insignia de Vuelo", desc: "Salto con pértiga adaptado", icon: Rocket, color: "bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-900/30 dark:text-fuchsia-400", border: "border-fuchsia-200 dark:border-fuchsia-800" },
-{ id: 2, name: "Brazo Biónico", desc: "Lanzamiento de jabalina-espuma", icon: Target, color: "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400", border: "border-amber-200 dark:border-amber-800" },
-{ id: 3, name: "Pies de Rayo", desc: "Circuito de agilidad superado", icon: Zap, color: "bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400", border: "border-cyan-200 dark:border-cyan-800" }
-],
-family: {
-feed: [
-{ id: 1, child: "Leo", text: "Dominó la técnica de salto continuo en 'El desafío del canguro'. ¡Excelente control postural!", time: "Hace 2 horas", icon: Award, color: "text-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30" },
-{ id: 2, child: "Leo", text: "Completó la sesión multideporte con una gran sonrisa y compañerismo.", time: "Ayer", icon: Smile, color: "text-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30" },
-{ id: 3, child: "Leo", text: "Mejoró su transferencia de fuerza en lanzamientos. ¡Brazo biónico en proceso!", time: "Hace 3 días", icon: Sparkles, color: "text-violet-500", bg: "bg-violet-100 dark:bg-violet-900/30" }
-],
-tips: [
-"La ciencia demuestra que practicar múltiples deportes antes de los 12 años reduce el riesgo de lesiones por sobreuso en un 50%.",
-"El juego libre desarrolla la creatividad motriz. Deja que inventen sus propias reglas en el parque.",
-"El objetivo en estas edades no es ganar medallas, sino aprender a moverse bien y construir un 'alfabetismo físico' sólido.",
-"Evita comparar a tu hijo con otros. El desarrollo biológico varía enormemente; algunos maduran antes, pero el éxito a largo plazo premia la constancia y la diversión.",
-"La especialización temprana aumenta el riesgo de 'burnout' (agotamiento mental). ¡La variedad es la clave!"
-]
-}
-};
+    <div id="root"></div>
 
-// --- COMPONENTE RADAR SVG ---
-const SkillsRadar = ({ carreras, saltos, lanzamientos, isDarkMode }) => {
-const size = 240;
-const center = size / 2;
-const maxRadius = 80;
-const gridColor = isDarkMode ? "#334155" : "#e5e7eb"; // slate-700 vs gray-200
+    <script type="text/babel">
+        // Extraemos las funciones de React y los iconos desde los componentes globales de la web
+        const { useState, useEffect } = React;
+        const {
+            User, Users, Activity, Shield, Trophy, AlertCircle, CheckCircle2,
+            Target, Info, Rocket, Zap, RefreshCw, Check, Sparkles, Flame,
+            Sun, Moon, BookOpen, Award, Smile, Heart
+        } = LucideReact;
 
-const getPoint = (value, angle) => {
-const rad = (angle * Math.PI) / 180;
-const r = (value / 100) * maxRadius;
-return `${center + r * Math.cos(rad)},${center + r * Math.sin(rad)}`;
-};
+        // --- MOCK DATA (Datos Falsos) ---
+        const mockData = {
+            coach: {
+                name: "Entrenadora Marta",
+                team: "Grupo Base Sub-10",
+                athletes: [
+                    { id: 101, name: "Hugo T.", profile: "Medio fondo", mission: "El desafío del canguro ", focus: "Saltos continuos y ritmo" },
+                    { id: 102, name: "Sofía M.", profile: "Agilidad", mission: "Circuito Ninja ", focus: "Cambios de dirección" },
+                    { id: 103, name: "Mateo R.", profile: "Fuerza base", mission: "Lanzamiento de Cohete ", focus: "Transferencia de fuerza" },
+                    { id: 104, name: "Leo G.", profile: "Equilibrado", mission: "Atrapa la bandera ", focus: "Velocidad de reacción" }
+                ]
+            },
+            badges: [
+                { id: 1, name: "Insignia de Vuelo", desc: "Salto con pértiga adaptado", icon: Rocket, color: "bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-900/30 dark:text-fuchsia-400", border: "border-fuchsia-200 dark:border-fuchsia-800" },
+                { id: 2, name: "Brazo Biónico", desc: "Lanzamiento de jabalina-espuma", icon: Target, color: "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400", border: "border-amber-200 dark:border-amber-800" },
+                { id: 3, name: "Pies de Rayo", desc: "Circuito de agilidad superado", icon: Zap, color: "bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400", border: "border-cyan-200 dark:border-cyan-800" }
+            ],
+            family: {
+                feed: [
+                    { id: 1, child: "Leo", text: "Dominó la técnica de salto continuo en 'El desafío del canguro'. ¡Excelente control postural!", time: "Hace 2 horas", icon: Award, color: "text-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30" },
+                    { id: 2, child: "Leo", text: "Completó la sesión multideporte con una gran sonrisa y compañerismo.", time: "Ayer", icon: Smile, color: "text-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30" },
+                    { id: 3, child: "Leo", text: "Mejoró su transferencia de fuerza en lanzamientos. ¡Brazo biónico en proceso!", time: "Hace 3 días", icon: Sparkles, color: "text-violet-500", bg: "bg-violet-100 dark:bg-violet-900/30" }
+                ],
+                tips: [
+                    "La ciencia demuestra que practicar múltiples deportes antes de los 12 años reduce el riesgo de lesiones por sobreuso en un 50%.",
+                    "El juego libre desarrolla la creatividad motriz. Deja que inventen sus propias reglas en el parque.",
+                    "El objetivo en estas edades no es ganar medallas, sino aprender a moverse bien y construir un 'alfabetismo físico' sólido.",
+                    "Evita comparar a tu hijo con otros. El desarrollo biológico varía enormemente; algunos maduran antes, pero el éxito a largo plazo premia la constancia y la diversión.",
+                    "La especialización temprana aumenta el riesgo de 'burnout' (agotamiento mental). ¡La variedad es la clave!"
+                ]
+            }
+        };
 
-const pCarreras = getPoint(carreras, -90);
-const pSaltos = getPoint(saltos, 30);
-const pLanzamientos = getPoint(lanzamientos, 150);
-const polygonPoints = `${pCarreras} ${pSaltos} ${pLanzamientos}`;
+        // --- COMPONENTE RADAR SVG ---
+        const SkillsRadar = ({ carreras, saltos, lanzamientos, isDarkMode }) => {
+            const size = 240;
+            const center = size / 2;
+            const maxRadius = 80;
+            const gridColor = isDarkMode ? "#334155" : "#e5e7eb";
 
-return (
-<div className="relative flex justify-center items-center">
-<svg width={size} height={size} className="overflow-visible">
-{[20, 40, 60, 80, 100].map((level) => (
-<polygon key={level} points={`${getPoint(level, -90)} ${getPoint(level, 30)} ${getPoint(level, 150)}`} fill="none" stroke={gridColor} strokeWidth="1" strokeDasharray={level === 100 ? "0" : "4 4"} />
-))}
-<line x1={center} y1={center} x2={getPoint(100, -90).split(',')[0]} y2={getPoint(100, -90).split(',')[1]} stroke={gridColor} strokeWidth="2" />
-<line x1={center} y1={center} x2={getPoint(100, 30).split(',')[0]} y2={getPoint(100, 30).split(',')[1]} stroke={gridColor} strokeWidth="2" />
-<line x1={center} y1={center} x2={getPoint(100, 150).split(',')[0]} y2={getPoint(100, 150).split(',')[1]} stroke={gridColor} strokeWidth="2" />
+            const getPoint = (value, angle) => {
+                const rad = (angle * Math.PI) / 180;
+                const r = (value / 100) * maxRadius;
+                return `${center + r * Math.cos(rad)},${center + r * Math.sin(rad)}`;
+            };
 
-<polygon points={polygonPoints} fill="rgba(99, 102, 241, 0.4)" stroke="#4f46e5" strokeWidth="3" className="transition-all duration-500 ease-out" />
-<circle cx={pCarreras.split(',')[0]} cy={pCarreras.split(',')[1]} r="5" fill="#4f46e5" className="transition-all duration-500" />
-<circle cx={pSaltos.split(',')[0]} cy={pSaltos.split(',')[1]} r="5" fill="#4f46e5" className="transition-all duration-500" />
-<circle cx={pLanzamientos.split(',')[0]} cy={pLanzamientos.split(',')[1]} r="5" fill="#4f46e5" className="transition-all duration-500" />
-</svg>
-<div className="absolute top-2 text-sm font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50 px-2 py-1 rounded-full">Carreras</div>
-<div className="absolute bottom-6 right-0 text-sm font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/50 px-2 py-1 rounded-full">Saltos</div>
-<div className="absolute bottom-6 left-0 text-sm font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/50 px-2 py-1 rounded-full">Lanzamientos</div>
-</div>
-);
-};
+            const pCarreras = getPoint(carreras, -90);
+            const pSaltos = getPoint(saltos, 30);
+            const pLanzamientos = getPoint(lanzamientos, 150);
+            const polygonPoints = `${pCarreras} ${pSaltos} ${pLanzamientos}`;
 
-// --- VISTAS ---
+            return (
+                <div className="relative flex justify-center items-center">
+                    <svg width={size} height={size} className="overflow-visible">
+                        {[20, 40, 60, 80, 100].map((level) => (
+                            <polygon key={level} points={`${getPoint(level, -90)} ${getPoint(level, 30)} ${getPoint(level, 150)}`} fill="none" stroke={gridColor} strokeWidth="1" strokeDasharray={level === 100 ? "0" : "4 4"} />
+                        ))}
+                        <line x1={center} y1={center} x2={getPoint(100, -90).split(',')[0]} y2={getPoint(100, -90).split(',')[1]} stroke={gridColor} strokeWidth="2" />
+                        <line x1={center} y1={center} x2={getPoint(100, 30).split(',')[0]} y2={getPoint(100, 30).split(',')[1]} stroke={gridColor} strokeWidth="2" />
+                        <line x1={center} y1={center} x2={getPoint(100, 150).split(',')[0]} y2={getPoint(100, 150).split(',')[1]} stroke={gridColor} strokeWidth="2" />
 
-const AthleteProfile = ({ isDarkMode }) => {
-const [skills, setSkills] = useState({ carreras: 60, saltos: 60, lanzamientos: 60 });
-const minSkill = Math.min(skills.carreras, skills.saltos, skills.lanzamientos);
-const maxSkill = Math.max(skills.carreras, skills.saltos, skills.lanzamientos);
-const isBalanced = (maxSkill - minSkill) <= 20;
-const overallLevel = isBalanced ? Math.round((skills.carreras + skills.saltos + skills.lanzamientos) / 3) : minSkill;
+                        <polygon points={polygonPoints} fill="rgba(99, 102, 241, 0.4)" stroke="#4f46e5" strokeWidth="3" className="transition-all duration-500 ease-out" />
+                        <circle cx={pCarreras.split(',')[0]} cy={pCarreras.split(',')[1]} r="5" fill="#4f46e5" className="transition-all duration-500" />
+                        <circle cx={pSaltos.split(',')[0]} cy={pSaltos.split(',')[1]} r="5" fill="#4f46e5" className="transition-all duration-500" />
+                        <circle cx={pLanzamientos.split(',')[0]} cy={pLanzamientos.split(',')[1]} r="5" fill="#4f46e5" className="transition-all duration-500" />
+                    </svg>
+                    <div className="absolute top-2 text-sm font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50 px-2 py-1 rounded-full">Carreras</div>
+                    <div className="absolute bottom-6 right-0 text-sm font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/50 px-2 py-1 rounded-full">Saltos</div>
+                    <div className="absolute bottom-6 left-0 text-sm font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/50 px-2 py-1 rounded-full">Lanzamientos</div>
+                </div>
+            );
+        };
 
-const handleSkillChange = (skill, value) => setSkills(prev => ({ ...prev, [skill]: parseInt(value) }));
+        // --- VISTAS ---
+        const AthleteProfile = ({ isDarkMode }) => {
+            const [skills, setSkills] = useState({ carreras: 60, saltos: 60, lanzamientos: 60 });
+            const minSkill = Math.min(skills.carreras, skills.saltos, skills.lanzamientos);
+            const maxSkill = Math.max(skills.carreras, skills.saltos, skills.lanzamientos);
+            const isBalanced = (maxSkill - minSkill) <= 20;
+            const overallLevel = isBalanced ? Math.round((skills.carreras + skills.saltos + skills.lanzamientos) / 3) : minSkill;
 
-return (
-<div className="space-y-6 animate-in fade-in duration-500">
-<div className="bg-gradient-to-br from-indigo-900 to-violet-800 p-6 rounded-3xl shadow-lg text-white flex flex-col md:flex-row items-center justify-between gap-6">
-<div className="flex items-center gap-4">
-<div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border-2 border-white/30">
-<span className="text-4xl">👦🏽</span>
-</div>
-<div>
-<h2 className="text-3xl font-black tracking-tight">Leo García</h2>
-<p className="text-indigo-200 font-medium">9 años | Explorador Multideportivo</p>
-</div>
-</div>
-<div className="bg-white/10 p-4 rounded-2xl backdrop-blur-md border border-white/20 text-center min-w-[160px]">
-<div className="text-sm text-indigo-200 font-bold mb-1 uppercase tracking-wider">Nivel General</div>
-<div className="text-5xl font-black text-white flex items-center justify-center gap-2">
-{overallLevel} <span className="text-2xl text-indigo-300">/100</span>
-</div>
-</div>
-</div>
+            const handleSkillChange = (skill, value) => setSkills(prev => ({ ...prev, [skill]: parseInt(value) }));
 
-<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-<div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col items-center transition-colors">
-<h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2 flex items-center gap-2 w-full">
-<Target className="w-6 h-6 text-indigo-500" /> Radar de Habilidades
-</h3>
-<SkillsRadar {...skills} isDarkMode={isDarkMode} />
-<div className="w-full space-y-4 mt-6 bg-gray-50 dark:bg-slate-800/50 p-4 rounded-2xl transition-colors">
-<div className="flex items-center gap-3">
-<span className="w-24 text-sm font-bold text-indigo-600 dark:text-indigo-400">Carreras</span>
-<input type="range" min="10" max="100" value={skills.carreras} onChange={(e) => handleSkillChange('carreras', e.target.value)} className="flex-1 accent-indigo-600" />
-</div>
-<div className="flex items-center gap-3">
-<span className="w-24 text-sm font-bold text-emerald-600 dark:text-emerald-400">Saltos</span>
-<input type="range" min="10" max="100" value={skills.saltos} onChange={(e) => handleSkillChange('saltos', e.target.value)} className="flex-1 accent-emerald-600" />
-</div>
-<div className="flex items-center gap-3">
-<span className="w-24 text-sm font-bold text-rose-600 dark:text-rose-400">Lanzamientos</span>
-<input type="range" min="10" max="100" value={skills.lanzamientos} onChange={(e) => handleSkillChange('lanzamientos', e.target.value)} className="flex-1 accent-rose-600" />
-</div>
-</div>
-</div>
+            return (
+                <div className="space-y-6 animate-in fade-in duration-500">
+                    <div className="bg-gradient-to-br from-indigo-900 to-violet-800 p-6 rounded-3xl shadow-lg text-white flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div className="flex items-center gap-4">
+                            <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border-2 border-white/30">
+                                <span className="text-4xl">🏃‍♂️</span>
+                            </div>
+                            <div>
+                                <h2 className="text-3xl font-black tracking-tight">Leo García</h2>
+                                <p className="text-indigo-200 font-medium">9 años | Explorador Multideportivo</p>
+                            </div>
+                        </div>
+                        <div className="bg-white/10 p-4 rounded-2xl backdrop-blur-md border border-white/20 text-center min-w-[160px]">
+                            <div className="text-sm text-indigo-200 font-bold mb-1 uppercase tracking-wider">Nivel General</div>
+                            <div className="text-5xl font-black text-white flex items-center justify-center gap-2">
+                                {overallLevel} <span className="text-2xl text-indigo-300">/100</span>
+                            </div>
+                        </div>
+                    </div>
 
-<div className="space-y-6">
-<div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800 transition-colors">
-<h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
-<Trophy className="w-6 h-6 text-amber-500" /> Insignias Recientes
-</h3>
-<div className="grid grid-cols-1 gap-3">
-{mockData.badges.map(badge => {
-const Icon = badge.icon;
-return (
-<div key={badge.id} className={`flex items-center gap-4 p-3 rounded-2xl border ${badge.border} bg-white dark:bg-slate-900 transition-colors`}>
-<div className={`p-3 rounded-xl ${badge.color}`}><Icon className="w-6 h-6" /></div>
-<div>
-<h4 className="font-bold text-gray-800 dark:text-slate-100">{badge.name}</h4>
-<p className="text-sm text-gray-500 dark:text-slate-400">{badge.desc}</p>
-</div>
-</div>
-);
-})}
-</div>
-</div>
-</div>
-</div>
-</div>
-);
-};
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col items-center transition-colors">
+                            <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2 flex items-center gap-2 w-full">
+                                <Target className="w-6 h-6 text-indigo-500" /> Radar de Habilidades
+                            </h3>
+                            <SkillsRadar {...skills} isDarkMode={isDarkMode} />
+                            <div className="w-full space-y-4 mt-6 bg-gray-50 dark:bg-slate-800/50 p-4 rounded-2xl transition-colors">
+                                <div className="flex items-center gap-3">
+                                    <span className="w-24 text-sm font-bold text-indigo-600 dark:text-indigo-400">Carreras</span>
+                                    <input type="range" min="10" max="100" value={skills.carreras} onChange={(e) => handleSkillChange('carreras', e.target.value)} className="flex-1 accent-indigo-600" />
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <span className="w-24 text-sm font-bold text-emerald-600 dark:text-emerald-400">Saltos</span>
+                                    <input type="range" min="10" max="100" value={skills.saltos} onChange={(e) => handleSkillChange('saltos', e.target.value)} className="flex-1 accent-emerald-600" />
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <span className="w-24 text-sm font-bold text-rose-600 dark:text-rose-400">Lanzamientos</span>
+                                    <input type="range" min="10" max="100" value={skills.lanzamientos} onChange={(e) => handleSkillChange('lanzamientos', e.target.value)} className="flex-1 accent-rose-600" />
+                                </div>
+                            </div>
+                        </div>
 
-const CoachDashboard = () => {
-const [progress, setProgress] = useState({});
-const handleProgress = (athleteId, status) => setProgress(prev => ({ ...prev, [athleteId]: status }));
+                        <div className="space-y-6">
+                            <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800 transition-colors">
+                                <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                                    <Trophy className="w-6 h-6 text-amber-500" /> Insignias Recientes
+                                </h3>
+                                <div className="grid grid-cols-1 gap-3">
+                                    {mockData.badges.map(badge => {
+                                        const Icon = badge.icon;
+                                        return (
+                                            <div key={badge.id} className={`flex items-center gap-4 p-3 rounded-2xl border ${badge.border} bg-white dark:bg-slate-900 transition-colors`}>
+                                                <div className={`p-3 rounded-xl ${badge.color}`}><Icon className="w-6 h-6" /></div>
+                                                <div>
+                                                    <h4 className="font-bold text-gray-800 dark:text-slate-100">{badge.name}</h4>
+                                                    <p className="text-sm text-gray-500 dark:text-slate-400">{badge.desc}</p>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
 
-return (
-<div className="space-y-6 animate-in fade-in duration-500">
-<div className="bg-slate-900 dark:bg-black p-6 rounded-3xl shadow-lg text-white flex items-center justify-between border border-slate-800">
-<div>
-<h2 className="text-2xl font-black flex items-center gap-2">
-<Flame className="w-6 h-6 text-orange-500" /> {mockData.coach.name}
-</h2>
-<p className="text-slate-400 font-medium mt-1">{mockData.coach.team} | Modo Pista (Registro Rápido)</p>
-</div>
-</div>
+        const CoachDashboard = () => {
+            const [progress, setProgress] = useState({});
+            const handleProgress = (athleteId, status) => setProgress(prev => ({ ...prev, [athleteId]: status }));
 
-<div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800 overflow-hidden transition-colors">
-<div className="p-6 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/30">
-<h3 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
-<Activity className="w-6 h-6 text-indigo-500" /> Misiones Multideporte de Hoy
-</h3>
-<p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Evalúa la ejecución técnica sin cronómetros. Un clic por atleta.</p>
-</div>
+            return (
+                <div className="space-y-6 animate-in fade-in duration-500">
+                    <div className="bg-slate-900 dark:bg-black p-6 rounded-3xl shadow-lg text-white flex items-center justify-between border border-slate-800">
+                        <div>
+                            <h2 className="text-2xl font-black flex items-center gap-2">
+                                <Flame className="w-6 h-6 text-orange-500" /> {mockData.coach.name}
+                            </h2>
+                            <p className="text-slate-400 font-medium mt-1">{mockData.coach.team} | Modo Pista (Registro Rápido)</p>
+                        </div>
+                    </div>
 
-<div className="divide-y divide-gray-100 dark:divide-slate-800">
-{mockData.coach.athletes.map(athlete => {
-const currentStatus = progress[athlete.id];
-return (
-<div key={athlete.id} className="p-4 sm:p-6 flex flex-col xl:flex-row xl:items-center justify-between gap-4 hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors">
-<div className="flex-1">
-<div className="flex items-center gap-3 mb-1">
-<h4 className="text-lg font-bold text-gray-900 dark:text-white">{athlete.name}</h4>
-<span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-{athlete.profile}
-</span>
-</div>
-<div className="text-sm text-indigo-600 dark:text-indigo-400 font-semibold flex items-center gap-1.5">
-Misión: {athlete.mission}
-</div>
-<div className="text-xs text-gray-500 dark:text-slate-400 mt-1">
-Foco técnico: {athlete.focus}
-</div>
-</div>
+                    <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800 overflow-hidden transition-colors">
+                        <div className="p-6 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/30">
+                            <h3 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
+                                <Activity className="w-6 h-6 text-indigo-500" /> Misiones Multideporte de Hoy
+                            </h3>
+                            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Evalúa la ejecución técnica sin cronómetros. Un clic por atleta.</p>
+                        </div>
 
-<div className="flex items-center gap-2 sm:gap-3 w-full xl:w-auto">
-<button onClick={() => handleProgress(athlete.id, 'proceso')} className={`flex-1 xl:flex-none flex flex-col items-center justify-center gap-1 px-3 py-2.5 rounded-2xl border-2 transition-all duration-200 ${currentStatus === 'proceso' ? 'bg-amber-100 dark:bg-amber-900/40 border-amber-400 text-amber-700 dark:text-amber-400 shadow-sm scale-105' : 'bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-700 text-gray-400 hover:border-amber-200 dark:hover:border-amber-800 hover:text-amber-600'}`}>
-<RefreshCw className={`w-5 h-5 ${currentStatus === 'proceso' ? 'animate-spin-slow' : ''}`} />
-<span className="text-[10px] font-bold uppercase tracking-wider">En proceso</span>
-</button>
-<button onClick={() => handleProgress(athlete.id, 'dominado')} className={`flex-1 xl:flex-none flex flex-col items-center justify-center gap-1 px-3 py-2.5 rounded-2xl border-2 transition-all duration-200 ${currentStatus === 'dominado' ? 'bg-emerald-100 dark:bg-emerald-900/40 border-emerald-400 text-emerald-700 dark:text-emerald-400 shadow-sm scale-105' : 'bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-700 text-gray-400 hover:border-emerald-200 dark:hover:border-emerald-800 hover:text-emerald-600'}`}>
-<Check className="w-5 h-5" />
-<span className="text-[10px] font-bold uppercase tracking-wider">Dominado</span>
-</button>
-<button onClick={() => handleProgress(athlete.id, 'excelente')} className={`flex-1 xl:flex-none flex flex-col items-center justify-center gap-1 px-3 py-2.5 rounded-2xl border-2 transition-all duration-200 ${currentStatus === 'excelente' ? 'bg-violet-100 dark:bg-violet-900/40 border-violet-400 text-violet-700 dark:text-violet-400 shadow-sm scale-105' : 'bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-700 text-gray-400 hover:border-violet-200 dark:hover:border-violet-800 hover:text-violet-600'}`}>
-<Sparkles className="w-5 h-5" />
-<span className="text-[10px] font-bold uppercase tracking-wider">Excelente</span>
-</button>
-</div>
-</div>
-);
-})}
-</div>
-</div>
-</div>
-);
-};
+                        <div className="divide-y divide-gray-100 dark:divide-slate-800">
+                            {mockData.coach.athletes.map(athlete => {
+                                const currentStatus = progress[athlete.id];
+                                return (
+                                    <div key={athlete.id} className="p-4 sm:p-6 flex flex-col xl:flex-row xl:items-center justify-between gap-4 hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors">
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-3 mb-1">
+                                                <h4 className="text-lg font-bold text-gray-900 dark:text-white">{athlete.name}</h4>
+                                                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                                                    {athlete.profile}
+                                                </span>
+                                            </div>
+                                            <div className="text-sm text-indigo-600 dark:text-indigo-400 font-semibold flex items-center gap-1.5">
+                                                Misión: {athlete.mission}
+                                            </div>
+                                            <div className="text-xs text-gray-500 dark:text-slate-400 mt-1">
+                                                Foco técnico: {athlete.focus}
+                                            </div>
+                                        </div>
 
-const FamilyView = () => {
-const [tipIndex, setTipIndex] = useState(0);
+                                        <div className="flex items-center gap-2 sm:gap-3 w-full xl:w-auto">
+                                            <button onClick={() => handleProgress(athlete.id, 'proceso')} className={`flex-1 xl:flex-none flex flex-col items-center justify-center gap-1 px-3 py-2.5 rounded-2xl border-2 transition-all duration-200 ${currentStatus === 'proceso' ? 'bg-amber-100 dark:bg-amber-900/40 border-amber-400 text-amber-700 dark:text-amber-400 shadow-sm scale-105' : 'bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-700 text-gray-400 hover:border-amber-200 dark:hover:border-amber-800 hover:text-amber-600'}`}>
+                                                <RefreshCw className="w-5 h-5" />
+                                                <span className="text-[10px] font-bold uppercase tracking-wider">En proceso</span>
+                                            </button>
+                                            <button onClick={() => handleProgress(athlete.id, 'dominado')} className={`flex-1 xl:flex-none flex flex-col items-center justify-center gap-1 px-3 py-2.5 rounded-2xl border-2 transition-all duration-200 ${currentStatus === 'dominado' ? 'bg-emerald-100 dark:bg-emerald-900/40 border-emerald-400 text-emerald-700 dark:text-emerald-400 shadow-sm scale-105' : 'bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-700 text-gray-400 hover:border-emerald-200 dark:hover:border-emerald-800 hover:text-emerald-600'}`}>
+                                                <Check className="w-5 h-5" />
+                                                <span className="text-[10px] font-bold uppercase tracking-wider">Dominado</span>
+                                            </button>
+                                            <button onClick={() => handleProgress(athlete.id, 'excelente')} className={`flex-1 xl:flex-none flex flex-col items-center justify-center gap-1 px-3 py-2.5 rounded-2xl border-2 transition-all duration-200 ${currentStatus === 'excelente' ? 'bg-violet-100 dark:bg-violet-900/40 border-violet-400 text-violet-700 dark:text-violet-400 shadow-sm scale-105' : 'bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-700 text-gray-400 hover:border-violet-200 dark:hover:border-violet-800 hover:text-violet-600'}`}>
+                                                <Sparkles className="w-5 h-5" />
+                                                <span className="text-[10px] font-bold uppercase tracking-wider">Excelente</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
 
-useEffect(() => {
-// Seleccionar un tip aleatorio al montar el componente
-setTipIndex(Math.floor(Math.random() * mockData.family.tips.length));
-}, []);
+        const FamilyView = () => {
+            const [tipIndex, setTipIndex] = useState(0);
 
-const nextTip = () => {
-setTipIndex((prev) => (prev + 1) % mockData.family.tips.length);
-};
+            useEffect(() => {
+                setTipIndex(Math.floor(Math.random() * mockData.family.tips.length));
+            }, []);
 
-return (
-<div className="space-y-6 animate-in fade-in duration-500">
+            const nextTip = () => {
+                setTipIndex((prev) => (prev + 1) % mockData.family.tips.length);
+            };
 
-{/* Píldora Educativa */}
-<div className="bg-gradient-to-r from-teal-500 to-emerald-600 p-6 rounded-3xl shadow-lg text-white relative overflow-hidden">
-<div className="absolute -right-4 -top-4 opacity-10">
-<BookOpen className="w-32 h-32" />
-</div>
-<div className="relative z-10">
-<div className="flex items-center justify-between mb-3">
-<h2 className="text-xl font-black flex items-center gap-2">
-<BookOpen className="w-6 h-6 text-teal-100" /> Píldora Educativa
-</h2>
-<button onClick={nextTip} className="p-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors backdrop-blur-sm" title="Siguiente consejo">
-<RefreshCw className="w-4 h-4 text-white" />
-</button>
-</div>
-<p className="text-teal-50 leading-relaxed font-medium text-lg min-h-[80px] flex items-center">
-"{mockData.family.tips[tipIndex]}"
-</p>
-</div>
-</div>
+            return (
+                <div className="space-y-6 animate-in fade-in duration-500">
+                    <div className="bg-gradient-to-r from-teal-500 to-emerald-600 p-6 rounded-3xl shadow-lg text-white relative overflow-hidden">
+                        <div className="absolute -right-4 -top-4 opacity-10">
+                            <BookOpen className="w-32 h-32" />
+                        </div>
+                        <div className="relative z-10">
+                            <div className="flex items-center justify-between mb-3">
+                                <h2 className="text-xl font-black flex items-center gap-2">
+                                    <BookOpen className="w-6 h-6 text-teal-100" /> Píldora Educativa
+                                </h2>
+                                <button onClick={nextTip} className="p-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors backdrop-blur-sm" title="Siguiente consejo">
+                                    <RefreshCw className="w-4 h-4 text-white" />
+                                </button>
+                            </div>
+                            <p className="text-teal-50 leading-relaxed font-medium text-lg min-h-[80px] flex items-center">
+                                "{mockData.family.tips[tipIndex]}"
+                            </p>
+                        </div>
+                    </div>
 
-{/* Muro de Logros Técnicos (Feed) */}
-<div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800 transition-colors">
-<h3 className="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-2">
-<Heart className="w-6 h-6 text-rose-500" /> Muro de Logros Técnicos
-</h3>
-
-<div className="space-y-6">
-{mockData.family.feed.map((item) => {
-const Icon = item.icon;
-return (
-<div key={item.id} className="flex gap-4 relative">
-{/* Línea conectora (Timeline) */}
-<div className="absolute left-6 top-12 bottom-[-24px] w-0.5 bg-gray-100 dark:bg-slate-800 last:hidden"></div>
-
-<div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 z-10 ${item.bg} ${item.color}`}>
-<Icon className="w-6 h-6" />
-</div>
-
-<div className="flex-1 bg-gray-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-gray-100 dark:border-slate-700/50">
-<div className="flex justify-between items-start mb-1">
-<span className="font-bold text-gray-900 dark:text-white">{item.child}</span>
-<span className="text-xs font-medium text-gray-400 dark:text-slate-500">{item.time}</span>
-</div>
-<p className="text-gray-600 dark:text-slate-300 text-sm leading-relaxed">
-{item.text}
-</p>
-</div>
-</div>
-);
-})}
-</div>
-</div>
-</div>
-);
-};
-
-// --- COMPONENTE PRINCIPAL ---
-export default function DecaKidsApp() {
-const [currentView, setCurrentView] = useState('family'); // Iniciamos en family para ver los cambios
-const [isDarkMode, setIsDarkMode] = useState(false);
-
-const navItems = [
-{ id: 'athlete', label: 'Atleta', icon: User },
-{ id: 'coach', label: 'Entrenador', icon: Activity },
-{ id: 'family', label: 'Familia', icon: Users }
-];
-
-// Toggle para el modo oscuro
-const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
-
-return (
-<div className={`${isDarkMode ? 'dark' : ''}`}>
-<div className="min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-gray-900 dark:text-slate-100 transition-colors duration-300 pb-12">
-
-{/* Navegación y Header */}
-<header className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 sticky top-0 z-20 shadow-sm transition-colors">
-<div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-<div className="flex flex-col sm:flex-row sm:items-center justify-between py-4 gap-4">
-
-<div className="flex items-center justify-between w-full sm:w-auto">
-<div className="flex items-center gap-3">
-<div className="bg-gradient-to-br from-indigo-500 to-violet-600 p-2.5 rounded-xl shadow-md">
-<Shield className="w-6 h-6 text-white" />
-</div>
-<h1 className="text-2xl font-black tracking-tight text-gray-900 dark:text-white">
-Deca<span className="text-indigo-600 dark:text-indigo-400">Kids</span>
-</h1>
-</div>
-
-{/* Botón Dark Mode (Móvil) */}
-<button onClick={toggleDarkMode} className="sm:hidden p-2 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300">
-{isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-</button>
-</div>
-
-<div className="flex items-center gap-4">
-<nav className="flex space-x-2 overflow-x-auto pb-2 sm:pb-0 hide-scrollbar">
-{navItems.map(item => {
-const Icon = item.icon;
-const isActive = currentView === item.id;
-return (
-<button
-key={item.id}
-onClick={() => setCurrentView(item.id)}
-className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${
-isActive
-? 'bg-gray-900 dark:bg-indigo-500 text-white shadow-md scale-105'
-: 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-white'
-}`}
->
-<Icon className="w-4 h-4" />
-{item.label}
-</button>
-);
-})}
-</nav>
-
-{/* Botón Dark Mode (Desktop) */}
-<button onClick={toggleDarkMode} className="hidden sm:flex p-2.5 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
-{isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-</button>
-</div>
-
-</div>
-</div>
-</header>
-
-{/* Contenido Principal */}
-<main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-{currentView === 'athlete' && <AthleteProfile isDarkMode={isDarkMode} />}
-{currentView === 'coach' && <CoachDashboard />}
-{currentView === 'family' && <FamilyView />}
-</main>
-</div>
-</div>
-);
-}
+                    <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800 transition-colors">
