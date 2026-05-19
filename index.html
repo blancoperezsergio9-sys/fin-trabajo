@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DecaKids - Gestión Multideporte</title>
+    <title>DecaKids Pro - Ecosistema de Alfabetismo Físico</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -29,54 +29,58 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // Generador automatizado de 3 clases x 30 alumnos (90 alumnos únicos e inventados)
+        // Base de datos científica adaptada a la asignatura (3 Clases x 30 Alumnos con perfiles psicomotrices)
         const namesClass1 = ["Hugo T.", "Sofía M.", "Mateo R.", "Leo G.", "Lucas P.", "Martín S.", "Daniel N.", "Alejandro V.", "Manuel B.", "Álvaro J.", "Adrián C.", "Enzo F.", "Mario L.", "Diego H.", "Marcos A.", "Eva D.", "Alba G.", "Emma R.", "Daniela M.", "Noa S.", "Valeria P.", "Claudia K.", "María L.", "Lucía F.", "Martina J.", "Alma N.", "Chloe B.", "Mía V.", "Carmen C.", "Elena G."];
         const namesClass2 = ["Pablo M.", "Sergio T.", "Jorge R.", "Iván L.", "Carlos V.", "Miguel B.", "David A.", "Álex J.", "Bruno F.", "Óliver S.", "Thiago H.", "Fabio C.", "Gonzalo G.", "Izan M.", "Gael N.", "Eric P.", "Julia D.", "Sara R.", "Lara M.", "Inés S.", "Vega V.", "Paula B.", "Irene F.", "Alicia C.", "Clara G.", "Ainara L.", "Olivia H.", "Ainhoa M.", "Nerea J.", "Rocío P."];
         const namesClass3 = ["Javier R.", "Héctor M.", "Rubén G.", "Víctor S.", "Raúl F.", "Isaac L.", "Samuel B.", "Ismael A.", "Francisco T.", "José H.", "Juan C.", "Tomás V.", "Nicolás P.", "Alan M.", "Denis G.", "Alberto J.", "Marta S.", "Ana B.", "Belén R.", "Andrea M.", "Natalia F.", "Celia C.", "Cristina G.", "Laura L.", "Marina H.", "Silvia V.", "Rebeca P.", "Nuria D.", "Ángela M.", "Leire J."];
 
-        const profiles = ["Medio fondo", "Agilidad", "Fuerza base", "Equilibrado", "Velocidad pura"];
-        const missions = ["El desafío del canguro", "Circuito Ninja", "Lanzamiento de Cohete", "Atrapa la bandera", "Salto del felino"];
-        const focuses = ["Saltos continuos y ritmo", "Cambios de dirección", "Transferencia de fuerza", "Velocidad de reacción", "Coordinación motriz"];
+        const motorProfiles = ["Especialista Locomoción", "Destreza Manipulativa", "Control de Estabilidad", "Perfil Equilibrado", "Desarrollo en Progreso"];
+        const learningStyles = ["Reto Individual", "Cooperativo", "Descubrimiento Guiado", "Asignación de Tareas", "Resolución de Problemas"];
+        const currentMissions = ["El vuelo del proyectil", "La senda del ninja", "Equilibrio en el abismo", "El circuito de postas", "Lanzamiento con diana"];
+        
+        // Ludoteca interactiva de iniciación deportiva
+        const ludotecaJuegos = [
+            { id: 1, name: "Canguros al rescate", objetivo: "Locomoción (Saltos plyométricos)", desc: "Los niños deben cruzar el espacio saltando a pies juntos dentro de aros. Si se cae un aro, un compañero debe reponerlo.", variante: "Añadir lanzamientos de saquitos de arena mientras saltan.", icono: "🦘" },
+            { id: 2, name: "El Pañuelo Multimotor", objetivo: "Velocidad de reacción y Agilidad", desc: "Al decir su número, los alumnos deben salir corriendo, esquivar tres conos en zigzag y atrapar el pañuelo.", variante: "El regreso al origen se hace con cuadrupedia o pata coja.", icono: "🎽" },
+            { id: 3, name: "Cazadores de Cohetes", objetivo: "Manipulación (Lanzamiento adaptado)", desc: "Lanzar jabalinas de espuma o vortex intentando que pasen a través de grandes aros suspendidos del techo.", variante: "Aumentar la distancia de tiro gradualmente según aciertos.", icono: "🚀" },
+            { id: 4, name: "El puente colgante", objetivo: "Estabilidad y Control Postural", desc: "Caminar sobre líneas en el suelo o bancos suecos portando un saquito en la cabeza sin que se caiga.", variante: "Cruzar el banco de espaldas o con los ojos semicerrados.", icono: "🪵" },
+            { id: 5, name: "La fortaleza móvil", objetivo: "Estrategia cooperativa y Percepción", desc: "Por parejas, uno protege un cono gigante con un escudo flotador y el otro intenta derribar los conos de las demás parejas lanzando pelotas blandas.", variante: "Lanzar exclusivamente con la mano no dominante.", icono: "🏰" }
+        ];
 
-        const generateClassData = (className, namesArray) => {
+        const generateClassData = (className, namesArray, stage) => {
             return {
                 name: className,
+                stage: stage,
                 athletes: namesArray.map((name, index) => ({
                     id: index + 1,
                     name: name,
-                    profile: profiles[index % profiles.length],
-                    mission: missions[index % missions.length],
-                    focus: focuses[index % focuses.length],
+                    profile: motorProfiles[index % motorProfiles.length],
+                    style: learningStyles[(index + 2) % learningStyles.length],
+                    mission: currentMissions[index % currentMissions.length],
                     skills: {
-                        carreras: 45 + (index * 7) % 50,
-                        saltos: 40 + (index * 9) % 55,
-                        lanzamientos: 35 + (index * 11) % 60
+                        locomocion: 40 + (index * 8) % 55,      // Carreras, saltos, giros
+                        estabilidad: 45 + (index * 6) % 50,     // Equilibrio, balance, postura
+                        manipulacion: 35 + (index * 11) % 60    // Lanzamientos, recepciones
                     }
                 }))
             };
         };
 
         const classesDataset = [
-            generateClassData("Clase A (Sub-8 Iniciación)", namesClass1),
-            generateClassData("Clase B (Sub-10 Desarrollo)", namesClass2),
-            generateClassData("Clase C (Sub-12 Rendimiento)", namesClass3)
-        ];
-
-        const mockBadges = [
-            { id: 1, name: "Insignia de Vuelo", desc: "Salto con pértiga adaptado", icon: "🚀", color: "bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-900/30 dark:text-fuchsia-400", border: "border-fuchsia-200 dark:border-fuchsia-800" },
-            { id: 2, name: "Brazo Biónico", desc: "Lanzamiento de jabalina-espuma", icon: "🎯", color: "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400", border: "border-amber-200 dark:border-amber-800" },
-            { id: 3, name: "Pies de Rayo", desc: "Circuito de agilidad superado", icon: "⚡", color: "bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400", border: "border-cyan-200 dark:border-cyan-800" }
+            generateClassData("Clase A (Fase del Descubrimiento)", namesClass1, "Etapa de Fundamentos (6-7 años)"),
+            generateClassData("Clase B (Fase de Consolidación)", namesClass2, "Etapa de Aprendizaje Motor (8-9 años)"),
+            generateClassData("Clase C (Fase de Especialización Base)", namesClass3, "Etapa de Rendimiento Lúdico (10-12 años)")
         ];
 
         const educationalTips = [
-            "La ciencia demuestra que practicar múltiples deportes antes de los 12 años reduce el riesgo de lesiones por sobreuso en un 50%.",
-            "El juego libre desarrolla la creatividad motriz. Deja que inventen sus propias reglas en el parque.",
-            "El objetivo en estas edades no es ganar medallas, sino aprender a moverse bien y construir un 'alfabetismo físico' sólido.",
-            "Evita comparar a los niños entre sí. El desarrollo biológico varía enormemente en etapas de crecimiento.",
-            "La especialización temprana aumenta el riesgo de burnout deportivo. ¡La variedad es la clave!"
+            "La variabilidad en la práctica es clave: Cambiar los tamaños de los balones y las superficies estimula la plasticidad cerebral de los niños.",
+            "Evita el feedback directivo masivo. Deja que el niño cometa el error motor para que reajuste su esquema corporal de forma autónoma.",
+            "Estudios en neuroeducación física confirman que el juego cooperativo aumenta los niveles de dopamina, fijando mejor los patrones de movimiento.",
+            "El desarrollo biológico y la edad cronológica rara vez coinciden. Un niño de 8 años puede tener una maduración motriz de uno de 11.",
+            "Fomentar el alfabeto físico previene el abandono deportivo prematuro en la adolescencia. El objetivo es crear niños competentes y seguros."
         ];
 
-        const SkillsRadar = ({ carreras, saltos, lanzamientos, isDarkMode }) => {
+        const SkillsRadar = ({ locomocion, estabilidad, manipulacion, isDarkMode }) => {
             const size = 220;
             const center = size / 2;
             const maxRadius = 70;
@@ -88,10 +92,10 @@
                 return `${center + r * Math.cos(rad)},${center + r * Math.sin(rad)}`;
             };
 
-            const pCarreras = getPoint(carreras, -90);
-            const pSaltos = getPoint(saltos, 30);
-            const pLanzamientos = getPoint(lanzamientos, 150);
-            const polygonPoints = `${pCarreras} ${pSaltos} ${pLanzamientos}`;
+            const pLocomocion = getPoint(locomocion, -90);
+            const pEstabilidad = getPoint(estabilidad, 30);
+            const pManipulacion = getPoint(manipulacion, 150);
+            const polygonPoints = `${pLocomocion} ${pEstabilidad} ${pManipulacion}`;
 
             return (
                 <div className="relative flex justify-center items-center my-4">
@@ -103,20 +107,20 @@
                         <line x1={center} y1={center} x2={getPoint(100, 30).split(',')[0]} y2={getPoint(100, 30).split(',')[1]} stroke={gridColor} strokeWidth="1.5" />
                         <line x1={center} y1={center} x2={getPoint(100, 150).split(',')[0]} y2={getPoint(100, 150).split(',')[1]} stroke={gridColor} strokeWidth="1.5" />
 
-                        <polygon points={polygonPoints} fill="rgba(99, 102, 241, 0.35)" stroke="#4f46e5" strokeWidth="2.5" className="transition-all duration-300" />
-                        <circle cx={pCarreras.split(',')[0]} cy={pCarreras.split(',')[1]} r="4" fill="#4f46e5" />
-                        <circle cx={pSaltos.split(',')[0]} cy={pSaltos.split(',')[1]} r="4" fill="#4f46e5" />
-                        <circle cx={pLanzamientos.split(',')[0]} cy={pLanzamientos.split(',')[1]} r="4" fill="#4f46e5" />
+                        <polygon points={polygonPoints} fill="rgba(79, 70, 229, 0.35)" stroke="#4f46e5" strokeWidth="2.5" className="transition-all duration-300" />
+                        <circle cx={pLocomocion.split(',')[0]} cy={pLocomocion.split(',')[1]} r="4.5" fill="#4f46e5" />
+                        <circle cx={pEstabilidad.split(',')[0]} cy={pEstabilidad.split(',')[1]} r="4.5" fill="#10b981" />
+                        <circle cx={pManipulacion.split(',')[0]} cy={pManipulacion.split(',')[1]} r="4.5" fill="#f43f5e" />
                     </svg>
-                    <div className="absolute top-0 text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50 px-2 py-0.5 rounded-full">Carreras</div>
-                    <div className="absolute bottom-2 right-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/50 px-2 py-0.5 rounded-full">Saltos</div>
-                    <div className="absolute bottom-2 left-2 text-xs font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/50 px-2 py-0.5 rounded-full">Lanzamientos</div>
+                    <div className="absolute top-0 text-xs font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950/50 px-2 py-0.5 rounded-full">Locomoción</div>
+                    <div className="absolute bottom-2 right-0 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full">Estabilidad</div>
+                    <div className="absolute bottom-2 left-0 text-xs font-bold text-rose-600 bg-rose-50 dark:bg-rose-950/50 px-2 py-0.5 rounded-full">Manipulación</div>
                 </div>
             );
         };
 
         const AthleteProfile = ({ selectedClass, selectedAthlete, onClassChange, onAthleteChange, isDarkMode }) => {
-            const [skills, setSkills] = useState({ carreras: 50, saltos: 50, lanzamientos: 50 });
+            const [skills, setSkills] = useState({ locomocion: 50, estabilidad: 50, manipulacion: 50 });
 
             useEffect(() => {
                 if (selectedAthlete) {
@@ -124,87 +128,86 @@
                 }
             }, [selectedAthlete]);
 
-            const overallLevel = Math.round((skills.carreras + skills.saltos + skills.lanzamientos) / 3);
+            const totalScore = Math.round((skills.locomocion + skills.estabilidad + skills.manipulacion) / 3);
 
             return (
                 <div className="space-y-6">
-                    {/* Selectores de Navegación entre Alumnos */}
-                    <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-wrap gap-4 items-center justify-between">
-                        <div className="flex items-center gap-2">
-                            <span className="text-sm font-bold text-gray-500">Filtrar Grupo:</span>
-                            <select value={classesDataset.indexOf(selectedClass)} onChange={(e) => onClassChange(parseInt(e.target.value))} className="bg-gray-50 dark:bg-slate-800 text-sm font-bold p-2 rounded-xl border border-gray-200 dark:border-slate-700">
+                    {/* Selectores Inteligentes */}
+                    <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row gap-4 justify-between">
+                        <div className="flex flex-col gap-1 flex-1">
+                            <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Grupo de Edad / Nivel Académico</label>
+                            <select value={classesDataset.indexOf(selectedClass)} onChange={(e) => onClassChange(parseInt(e.target.value))} className="w-full bg-slate-50 dark:bg-slate-800 text-sm font-bold p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100">
                                 {classesDataset.map((c, idx) => <option key={idx} value={idx}>{c.name}</option>)}
                             </select>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <span className="text-sm font-bold text-gray-500">Ficha del Alumno:</span>
-                            <select value={selectedAthlete.id} onChange={(e) => onAthleteChange(parseInt(e.target.value))} className="bg-indigo-50 dark:bg-slate-800 text-sm font-bold text-indigo-700 dark:text-indigo-400 p-2 rounded-xl border border-indigo-100 dark:border-slate-700">
+                        <div className="flex flex-col gap-1 flex-1">
+                            <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Expediente del Alumno</label>
+                            <select value={selectedAthlete.id} onChange={(e) => onAthleteChange(parseInt(e.target.value))} className="w-full bg-indigo-50/50 dark:bg-indigo-950/20 text-sm font-bold text-indigo-700 dark:text-indigo-400 p-2.5 rounded-xl border border-indigo-100/50 dark:border-indigo-900/50">
                                 {selectedClass.athletes.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
                             </select>
                         </div>
                     </div>
 
-                    {/* Tarjeta de Presentación */}
-                    <div className="bg-gradient-to-br from-indigo-900 to-violet-800 p-6 rounded-3xl shadow-lg text-white flex flex-col sm:flex-row items-center justify-between gap-6">
-                        <div className="flex items-center gap-4 text-center sm:text-left flex-col sm:flex-row">
-                            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30 text-3xl">
-                                🏃‍♂️
+                    {/* Ficha Principal de Neurodesarrollo */}
+                    <div className="bg-gradient-to-br from-indigo-950 via-indigo-900 to-purple-900 p-6 rounded-3xl shadow-lg text-white flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div className="flex items-center gap-4 text-center md:text-left flex-col md:flex-row">
+                            <div className="w-16 h-16 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center text-3xl shadow-inner">
+                                🌟
                             </div>
                             <div>
                                 <h2 className="text-2xl font-black tracking-tight">{selectedAthlete.name}</h2>
-                                <p className="text-indigo-200 text-sm font-medium">{selectedClass.name} | Perfil: {selectedAthlete.profile}</p>
+                                <p className="text-indigo-200 text-xs font-semibold mt-0.5">{selectedClass.stage}</p>
+                                <div className="flex flex-wrap gap-2 mt-2 justify-center md:justify-start">
+                                    <span className="bg-white/10 px-2 py-0.5 rounded-md text-[10px] font-mono tracking-wide uppercase">{selectedAthlete.profile}</span>
+                                    <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-md text-[10px] font-medium">Motivación: {selectedAthlete.style}</span>
+                                </div>
                             </div>
                         </div>
-                        <div className="bg-white/10 p-3 rounded-2xl backdrop-blur-md border border-white/20 text-center min-w-[140px]">
-                            <div className="text-[10px] text-indigo-200 font-bold mb-0.5 uppercase tracking-wider">Potencial Motor</div>
-                            <div className="text-4xl font-black text-white">{overallLevel}<span className="text-lg text-indigo-300">/100</span></div>
+                        <div className="bg-slate-900/40 p-4 rounded-2xl border border-white/10 text-center min-w-[140px] shadow-2xl">
+                            <div className="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">Índice Motor Global</div>
+                            <div className="text-4xl font-black text-white mt-1">{totalScore}<span className="text-lg text-indigo-400">/100</span></div>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        {/* Control de Radar */}
-                        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col items-center">
-                            <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-2 w-full flex items-center gap-2">
-                                🎯 Análisis de Capacidades
-                            </h3>
-                            <SkillsRadar {...skills} isDarkMode={isDarkMode} />
-                            <div className="w-full space-y-3 bg-gray-50 dark:bg-slate-800/50 p-4 rounded-2xl mt-4">
-                                <div className="flex items-center gap-3">
-                                    <span className="w-24 text-xs font-bold text-indigo-600">Carreras</span>
-                                    <input type="range" min="10" max="100" value={skills.carreras} onChange={(e) => setSkills(p => ({...p, carreras: parseInt(e.target.value)}))} className="flex-1 accent-indigo-600" />
-                                    <span className="text-xs font-bold w-6 text-right">{skills.carreras}</span>
+                        {/* Gráfico Analítico */}
+                        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col items-center">
+                            <h3 className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider w-full mb-2">📊 Patrones Motores Fundamentales</h3>
+                            <SkillsRadar locomocion={skills.locomocion} estabilidad={skills.estabilidad} manipulacion={skills.manipulacion} isDarkMode={isDarkMode} />
+                            
+                            <div className="w-full space-y-3 bg-slate-50 dark:bg-slate-800/40 p-4 rounded-2xl mt-4">
+                                <div>
+                                    <div className="flex justify-between text-xs font-bold mb-1 text-indigo-600"><span>Locomoción (Saltar/Correr)</span><span>{skills.locomocion}%</span></div>
+                                    <input type="range" min="10" max="100" value={skills.locomocion} onChange={(e) => setSkills(p => ({...p, locomocion: parseInt(e.target.value)}))} className="w-full accent-indigo-600" />
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <span className="w-24 text-xs font-bold text-emerald-600">Saltos</span>
-                                    <input type="range" min="10" max="100" value={skills.saltos} onChange={(e) => setSkills(p => ({...p, saltos: parseInt(e.target.value)}))} className="flex-1 accent-emerald-600" />
-                                    <span className="text-xs font-bold w-6 text-right">{skills.saltos}</span>
+                                <div>
+                                    <div className="flex justify-between text-xs font-bold mb-1 text-emerald-600"><span>Estabilidad (Postura/Girar)</span><span>{skills.estabilidad}%</span></div>
+                                    <input type="range" min="10" max="100" value={skills.estabilidad} onChange={(e) => setSkills(p => ({...p, estabilidad: parseInt(e.target.value)}))} className="w-full accent-emerald-600" />
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <span className="w-24 text-xs font-bold text-rose-600">Lanzamientos</span>
-                                    <input type="range" min="10" max="100" value={skills.lanzamientos} onChange={(e) => setSkills(p => ({...p, lanzamientos: parseInt(e.target.value)}))} className="flex-1 accent-rose-600" />
-                                    <span className="text-xs font-bold w-6 text-right">{skills.lanzamientos}</span>
+                                <div>
+                                    <div className="flex justify-between text-xs font-bold mb-1 text-rose-600"><span>Manipulación (Lanzar/Cazar)</span><span>{skills.manipulacion}%</span></div>
+                                    <input type="range" min="10" max="100" value={skills.manipulacion} onChange={(e) => setSkills(p => ({...p, manipulacion: parseInt(e.target.value)}))} className="w-full accent-rose-600" />
                                 </div>
                             </div>
                         </div>
 
-                        {/* Logros e Historial */}
-                        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800">
-                            <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-4">🏆 Objetivos Educativos</h3>
-                            <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50 p-4 rounded-2xl mb-4">
-                                <div className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase">Misión Actual</div>
-                                <div className="font-bold text-gray-900 dark:text-white text-base mt-0.5">{selectedAthlete.mission}</div>
-                                <div className="text-xs text-gray-500 dark:text-slate-400 mt-1">Enfoque: {selectedAthlete.focus}</div>
+                        {/* Tareas de la Unidad Didáctica */}
+                        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col justify-between">
+                            <div>
+                                <h3 className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">🎯 Objetivo de la Sesión Actual</h3>
+                                <div className="bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 p-4 rounded-2xl mb-4">
+                                    <div className="text-[10px] font-bold text-indigo-600 uppercase tracking-wide">Foco de Variabilidad Motriz</div>
+                                    <div className="font-bold text-slate-800 dark:text-white text-base mt-1">{selectedAthlete.mission}</div>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Metodología adaptada al estilo de **{selectedAthlete.style}** para optimizar el aprendizaje sin saturar el sistema nervioso.</p>
+                                </div>
                             </div>
-                            <div className="space-y-3">
-                                {mockBadges.map(badge => (
-                                    <div key={badge.id} className={`flex items-center gap-4 p-3 rounded-2xl border ${badge.border} bg-white dark:bg-slate-900`}>
-                                        <div className={`w-10 h-10 rounded-xl ${badge.color} text-xl flex items-center justify-center`}>{badge.icon}</div>
-                                        <div>
-                                            <h4 className="font-bold text-sm text-gray-800 dark:text-slate-100">{badge.name}</h4>
-                                            <p className="text-xs text-gray-500 dark:text-slate-400">{badge.desc}</p>
-                                        </div>
-                                    </div>
-                                ))}
+                            <div className="border-t border-slate-100 dark:border-slate-800 pt-4">
+                                <div className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">Insignias por Competencias Co-programáticas</div>
+                                <div className="flex gap-2">
+                                    <div className="flex-1 bg-amber-50 dark:bg-slate-800 p-2.5 rounded-xl text-center border border-amber-100 dark:border-slate-700"><span className="text-lg">🤝</span><div className="text-[9px] font-bold mt-0.5 text-slate-700 dark:text-slate-300">Compañerismo</div></div>
+                                    <div className="flex-1 bg-cyan-50 dark:bg-slate-800 p-2.5 rounded-xl text-center border border-cyan-100 dark:border-slate-700"><span className="text-lg">🧠</span><div className="text-[9px] font-bold mt-0.5 text-slate-700 dark:text-slate-300">Resolución</div></div>
+                                    <div className="flex-1 bg-rose-50 dark:bg-slate-800 p-2.5 rounded-xl text-center border border-rose-100 dark:border-slate-700"><span className="text-lg">⚡</span><div className="text-[9px] font-bold mt-0.5 text-slate-700 dark:text-slate-300">Constancia</div></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -222,55 +225,58 @@
 
             return (
                 <div className="space-y-6">
-                    {/* Encabezado e Interruptor de Aula */}
-                    <div className="bg-slate-950 p-6 rounded-3xl shadow-lg text-white flex flex-col md:flex-row items-center justify-between gap-4 border border-slate-800">
+                    {/* Cabecera Técnica del Profesor */}
+                    <div className="bg-slate-900 p-6 rounded-3xl shadow-lg text-white flex flex-col lg:flex-row items-center justify-between gap-4 border border-slate-800">
                         <div>
-                            <h2 className="text-xl font-black flex items-center gap-2">📋 Panel Técnico del Entrenador</h2>
-                            <p className="text-slate-400 text-xs mt-0.5">Monitoreo de destrezas en tiempo real</p>
+                            <h2 className="text-xl font-black flex items-center gap-2">📋 Cuaderno de Evaluación Docente</h2>
+                            <p className="text-slate-400 text-xs mt-0.5">Control cualitativo según el Modelo de Alfabetismo Físico</p>
                         </div>
-                        <div className="flex items-center gap-2 w-full md:w-auto">
-                            <span className="text-xs font-bold text-slate-400 whitespace-nowrap">Cambiar Grupo:</span>
-                            <select value={classesDataset.indexOf(selectedClass)} onChange={(e) => onClassChange(parseInt(e.target.value))} className="w-full md:w-auto bg-slate-800 text-xs font-bold p-2.5 rounded-xl border border-slate-700 text-white">
+                        <div className="flex items-center gap-3 w-full lg:w-auto">
+                            <span className="text-xs font-bold text-slate-400 whitespace-nowrap">Grupo de Trabajo:</span>
+                            <select value={classesDataset.indexOf(selectedClass)} onChange={(e) => onClassChange(parseInt(e.target.value))} className="w-full lg:w-auto bg-slate-800 text-xs font-bold p-2.5 rounded-xl border border-slate-700 text-white">
                                 {classesDataset.map((c, idx) => <option key={idx} value={idx}>{c.name}</option>)}
                             </select>
                         </div>
                     </div>
 
-                    {/* Lista Completa de los 30 Alumnos */}
-                    <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800 overflow-hidden">
-                        <div className="p-4 bg-gray-50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-slate-800 flex justify-between items-center">
-                            <h3 className="font-bold text-gray-800 dark:text-white text-sm">Registro de Clase ({selectedClass.athletes.length} Alumnos en Lista)</h3>
-                            <span className="text-[11px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">{selectedClass.name}</span>
+                    {/* Listado Completo de Alumnos */}
+                    <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden">
+                        <div className="p-4 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                            <span className="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Control Diario ({selectedClass.athletes.length} Matriculados)</span>
+                            <span className="text-[10px] bg-indigo-600 text-white px-2.5 py-0.5 rounded-md font-mono">{selectedClass.stage}</span>
                         </div>
 
-                        <div className="divide-y divide-gray-100 dark:divide-slate-800 max-h-[600px] overflow-y-auto">
+                        <div className="divide-y divide-slate-100 dark:divide-slate-800 max-h-[500px] overflow-y-auto">
                             {selectedClass.athletes.map(athlete => {
                                 const currentStatus = progress[`${selectedClass.name}-${athlete.id}`];
                                 return (
-                                    <div key={athlete.id} className="p-4 flex flex-col lg:flex-row lg:items-center justify-between gap-4 hover:bg-slate-50/50 dark:hover:bg-slate-800/20">
+                                    <div key={athlete.id} className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/40 dark:hover:bg-slate-800/30 transition-colors">
                                         <div className="flex-1">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <span className="text-xs font-mono text-gray-400">#{athlete.id.toString().padStart(2, '0')}</span>
-                                                <h4 className="font-bold text-gray-900 dark:text-white text-base">{athlete.name}</h4>
-                                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                                            <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                                <span className="text-xs font-mono text-slate-400">ID-{athlete.id.toString().padStart(2, '0')}</span>
+                                                <h4 className="font-bold text-slate-900 dark:text-white text-base">{athlete.name}</h4>
+                                                <span className="px-2 py-0.5 rounded-md text-[9px] font-bold bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 border border-indigo-100/50 dark:border-indigo-900/50">
                                                     {athlete.profile}
                                                 </span>
+                                                <span className="px-2 py-0.5 rounded-md text-[9px] font-bold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400">
+                                                    🎯 Estilo: {athlete.style}
+                                                </span>
                                             </div>
-                                            <div className="text-xs text-indigo-600 font-medium">Foco Técnico: {athlete.focus}</div>
+                                            <div className="text-xs text-slate-500 dark:text-slate-400">Misión planteada: <span className="font-medium text-slate-700 dark:text-slate-300">{athlete.mission}</span></div>
                                         </div>
 
-                                        <div className="grid grid-cols-3 gap-2 w-full lg:w-auto">
-                                            <button onClick={() => handleProgress(athlete.id, 'proceso')} className={`flex flex-col items-center p-2 rounded-xl border transition-all ${currentStatus === 'proceso' ? 'bg-amber-100 border-amber-400 text-amber-800 font-bold' : 'border-gray-200 text-gray-400'}`}>
+                                        <div className="grid grid-cols-3 gap-1.5 w-full md:w-auto">
+                                            <button onClick={() => handleProgress(athlete.id, 'proceso')} className={`flex flex-col items-center p-2 rounded-xl border transition-all text-center ${currentStatus === 'proceso' ? 'bg-amber-50 dark:bg-amber-950/30 border-amber-400 text-amber-700 dark:text-amber-400 font-bold' : 'border-slate-100 dark:border-slate-800 text-slate-400'}`}>
                                                 <span className="text-base">🔄</span>
-                                                <span className="text-[9px] mt-0.5">En proceso</span>
+                                                <span className="text-[9px] mt-0.5">En Proceso</span>
                                             </button>
-                                            <button onClick={() => handleProgress(athlete.id, 'dominado')} className={`flex flex-col items-center p-2 rounded-xl border transition-all ${currentStatus === 'dominado' ? 'bg-emerald-100 border-emerald-400 text-emerald-800 font-bold' : 'border-gray-200 text-gray-400'}`}>
+                                            <button onClick={() => handleProgress(athlete.id, 'dominado')} className={`flex flex-col items-center p-2 rounded-xl border transition-all text-center ${currentStatus === 'dominado' ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-400 text-emerald-700 dark:text-emerald-400 font-bold' : 'border-slate-100 dark:border-slate-800 text-slate-400'}`}>
                                                 <span className="text-base">✅</span>
-                                                <span className="text-[9px] mt-0.5">Dominado</span>
+                                                <span className="text-[9px] mt-0.5">Adquirido</span>
                                             </button>
-                                            <button onClick={() => handleProgress(athlete.id, 'excelente')} className={`flex flex-col items-center p-2 rounded-xl border transition-all ${currentStatus === 'excelente' ? 'bg-violet-100 border-violet-400 text-violet-800 font-bold' : 'border-gray-200 text-gray-400'}`}>
+                                            <button onClick={() => handleProgress(athlete.id, 'excelente')} className={`flex flex-col items-center p-2 rounded-xl border transition-all text-center ${currentStatus === 'excelente' ? 'bg-purple-50 dark:bg-purple-950/30 border-purple-400 text-purple-700 dark:text-purple-400 font-bold' : 'border-slate-100 dark:border-slate-800 text-slate-400'}`}>
                                                 <span className="text-base">✨</span>
-                                                <span className="text-[9px] mt-0.5">Excelente</span>
+                                                <span className="text-[9px] mt-0.5">S. Sobresaliente</span>
                                             </button>
                                         </div>
                                     </div>
@@ -284,124 +290,61 @@
 
         const FamilyView = ({ selectedAthlete }) => {
             const [tipIndex, setTipIndex] = useState(0);
-            
-            // Muro dinámico: Cambia el contenido según el alumno seleccionado
+            const [activeJuego, setActiveJuego] = useState(ludotecaJuegos[0]);
+
             const dynamicFeed = [
-                { id: 1, text: `Dominó con gran soltura la actividad de '${selectedAthlete.mission}'. Se observa un excelente ajuste y coordinación motriz.`, time: "Hace 2 horas", icon: "🏅", color: "text-emerald-500", bg: "bg-emerald-100" },
-                { id: 2, text: `Completó todo el bloque de habilidades específicas mostrando un alto nivel de compañerismo en el grupo.`, time: "Ayer", icon: "💪", color: "text-amber-500", bg: "bg-amber-100" },
-                { id: 3, text: `Consiguió un progreso destacado en su enfoque principal: ${selectedAthlete.focus}. ¡Sigue sumando experiencia!`, time: "Hace 3 días", icon: "✨", color: "text-violet-500", bg: "bg-violet-100" }
+                { id: 1, text: `Ha completado con éxito la tarea formativa de '${selectedAthlete.mission}'. Se observa un avance notable en los esquemas propioceptivos de su tren inferior.`, time: "Esta tarde", icon: "💎" },
+                { id: 2, text: `Muestra una gran predisposición hacia el estilo de aprendizaje '${selectedAthlete.style}', guiando de manera positiva a sus compañeros de grupo.`, time: "Ayer en sesión", icon: "🛡️" }
             ];
 
             return (
                 <div className="space-y-6">
-                    {/* Tarjeta Educativa */}
-                    <div className="bg-gradient-to-r from-teal-600 to-emerald-600 p-6 rounded-3xl shadow-lg text-white">
-                        <div className="flex items-center justify-between mb-2">
-                            <h2 className="text-md font-bold flex items-center gap-2">📖 Recomendación de Ciencias del Deporte</h2>
-                            <button onClick={() => setTipIndex((p) => (p + 1) % educationalTips.length)} className="text-sm bg-white/20 px-2 py-1 rounded-lg">Siguiente 🔄</button>
+                    {/* Neuroconsejo para Padres */}
+                    <div className="bg-gradient-to-r from-teal-700 to-emerald-700 p-5 rounded-3xl shadow-lg text-white">
+                        <div className="flex justify-between items-center mb-2">
+                            <h2 className="text-xs font-bold uppercase tracking-wider text-teal-200">🧠 Escuela de Padres Deportivos</h2>
+                            <button onClick={() => setTipIndex((p) => (p + 1) % educationalTips.length)} className="text-xs bg-white/20 px-2.5 py-1 rounded-lg font-bold">Cambiar Tip 🔄</button>
                         </div>
-                        <p className="text-teal-50 font-medium text-base">"{educationalTips[tipIndex]}"</p>
+                        <p className="text-white font-medium text-base leading-relaxed">"{educationalTips[tipIndex]}"</p>
                     </div>
 
-                    {/* Notificaciones del Alumno Seleccionado */}
-                    <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800">
-                        <div className="mb-4 flex justify-between items-center flex-wrap gap-2">
-                            <h3 className="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">❤️ Muro de Logros Familiares</h3>
-                            <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">Monitoreando a: {selectedAthlete.name}</span>
-                        </div>
-                        
-                        <div className="space-y-6 relative mt-4">
-                            {dynamicFeed.map((item) => (
-                                <div key={item.id} className="flex gap-4 relative">
-                                    <div className="w-10 h-10 rounded-full flex items-center justify-center z-10 shrink-0 text-xl bg-slate-100">{item.icon}</div>
-                                    <div className="flex-1 bg-gray-50 dark:bg-slate-800/40 p-4 rounded-2xl border border-gray-100 dark:border-slate-800">
-                                        <div className="flex justify-between items-center mb-1">
-                                            <span className="font-bold text-sm text-gray-900 dark:text-white">{selectedAthlete.name}</span>
-                                            <span className="text-[10px] text-gray-400">{item.time}</span>
-                                        </div>
-                                        <p className="text-gray-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">{item.text}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        function DecaKidsApp() {
-            const [currentView, setCurrentView] = useState('athlete');
-            const [isDarkMode, setIsDarkMode] = useState(false);
-            
-            // Estados globales para coordinar los selectores e interactividad
-            const [classIdx, setClassIdx] = useState(1); // Empieza en Clase B por defecto
-            const [athleteId, setAthleteId] = useState(4); // Empieza en el alumno 4 por defecto
-
-            const activeClass = classesDataset[classIdx];
-            // Asegura que si se cambia de clase, el id de alumno no desborde la lista de 30
-            const activeAthlete = activeClass.athletes.find(a => a.id === athleteId) || activeClass.athletes[0];
-
-            const handleClassChange = (newIdx) => {
-                setClassIdx(newIdx);
-                setAthleteId(1); // Resetea al primer alumno del nuevo grupo seleccionado
-            };
-
-            return (
-                <div className={isDarkMode ? 'dark' : ''}>
-                    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-gray-900 dark:text-slate-100 pb-12 transition-colors">
-                        
-                        {/* Barra Superior */}
-                        <header className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 sticky top-0 z-20 shadow-sm">
-                            <div className="max-w-4xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
-                                <div className="flex items-center justify-between w-full sm:w-auto">
-                                    <h1 className="text-xl font-black tracking-tight">Deca<span className="text-indigo-600">Kids</span></h1>
-                                    <button onClick={() => setIsDarkMode(!isDarkMode)} className="sm:hidden p-2 text-md">
-                                        {isDarkMode ? '☀️' : '🌙'}
-                                    </button>
-                                </div>
-                                <div className="flex items-center gap-3 w-full sm:w-auto justify-center">
-                                    <nav className="flex space-x-1 bg-gray-100 p-1 rounded-xl text-xs font-bold">
-                                        <button onClick={() => setCurrentView('athlete')} className={`px-4 py-2 rounded-lg ${currentView === 'athlete' ? 'bg-white shadow text-indigo-600' : 'text-gray-500'}`}>👤 Atleta</button>
-                                        <button onClick={() => setCurrentView('coach')} className={`px-4 py-2 rounded-lg ${currentView === 'coach' ? 'bg-white shadow text-indigo-600' : 'text-gray-500'}`}>📋 Entrenador</button>
-                                        <button onClick={() => setCurrentView('family')} className={`px-4 py-2 rounded-lg ${currentView === 'family' ? 'bg-white shadow text-indigo-600' : 'text-gray-500'}`}>👨‍👩‍👧 Familia</button>
-                                    </nav>
-                                    <button onClick={() => setIsDarkMode(!isDarkMode)} className="hidden sm:block p-2 text-md">
-                                        {isDarkMode ? '☀️' : '🌙'}
-                                    </button>
-                                </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        {/* Feed Dinámico Familiar */}
+                        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 lg:col-span-2">
+                            <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                                <h3 className="font-bold text-slate-800 dark:text-white text-base">❤️ Diario de Aprendizaje Motriz</h3>
+                                <span className="text-xs font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-3 py-1 rounded-full shrink-0">Viendo a: {selectedAthlete.name}</span>
                             </div>
-                        </header>
+                            
+                            <div className="space-y-4">
+                                {dynamicFeed.map((item) => (
+                                    <div key={item.id} className="flex gap-4">
+                                        <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 text-lg shadow-sm">{item.icon}</div>
+                                        <div className="flex-1 bg-slate-50 dark:bg-slate-800/30 p-4 rounded-2xl border border-slate-100/50 dark:border-slate-800">
+                                            <div className="flex justify-between items-center mb-1">
+                                                <span className="font-bold text-xs text-slate-400 uppercase">Informe Cualitativo</span>
+                                                <span className="text-[10px] font-medium text-slate-400">{item.time}</span>
+                                            </div>
+                                            <p className="text-slate-700 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">{item.text}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
 
-                        {/* Espacio de Trabajo Principal */}
-                        <main className="max-w-4xl mx-auto px-4 py-6">
-                            {currentView === 'athlete' && (
-                                <AthleteProfile 
-                                    selectedClass={activeClass} 
-                                    selectedAthlete={activeAthlete}
-                                    onClassChange={handleClassChange}
-                                    onAthleteChange={setAthleteId}
-                                    isDarkMode={isDarkMode} 
-                                />
-                            )}
-                            {currentView === 'coach' && (
-                                <CoachDashboard 
-                                    selectedClass={activeClass} 
-                                    onClassChange={handleClassChange} 
-                                />
-                            )}
-                            {currentView === 'family' && (
-                                <FamilyView 
-                                    selectedAthlete={activeAthlete} 
-                                />
-                            )}
-                        </main>
-                    </div>
-                </div>
-            );
-        }
+                        {/* Banco de Juegos Interactivos */}
+                        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800">
+                            <h3 className="font-bold text-slate-800 dark:text-white text-sm uppercase tracking-wider mb-3">🎲 Ludoteca Familiar</h3>
+                            <p className="text-[11px] text-slate-400 mb-3">Juegos recomendados para replicar en parques o casa:</p>
+                            
+                            <div className="flex gap-1.5 overflow-x-auto hide-scrollbar pb-2 border-b border-slate-100 dark:border-slate-800">
+                                {ludotecaJuegos.map(j => (
+                                    <button key={j.id} onClick={() => setActiveJuego(j)} className={`px-3 py-1.5 text-xs font-bold rounded-lg shrink-0 ${activeJuego.id === j.id ? 'bg-indigo-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'}`}>
+                                        {j.icono} {j.name.split(' ')[0]}
+                                    </button>
+                                ))}
+                            </div>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<DecaKidsApp />);
-    </script>
-</body>
-</html>
+                            <div className="mt-3 bg-slate-50 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-100/50 dark:border-slate-800">
+                                <div className="text-xs font-bold text-indigo-600 mb-0.5">{activeJuego.name}</div>
+                                <div className="text-[10px] font-
