@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DecaKids Pro Max - Ecosistema Integral CAFYD</title>
+    <title>DecaKids Pro - Ecosistema Integral CAFYD</title>
     
+    <script>
+        window.addEventListener('error', function(event) {
+            document.body.innerHTML = '<div style="background:#fee2e2; color:#991b1b; padding:2rem; font-family:sans-serif; border: 2px solid #ef4444; margin: 2rem; border-radius: 10px;"><h2>⚠️ Error Crítico en el Código</h2><p><strong>Mensaje:</strong> ' + event.message + '</p><p><strong>Archivo:</strong> ' + event.filename + '</p><p><strong>Línea:</strong> ' + event.lineno + '</p><p>Revisa la consola (F12) para más detalles.</p></div>';
+        });
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -27,20 +33,15 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        const namesClass1 = ["Hugo T.", "Sofía M.", "Mateo R.", "Leo G.", "Lucas P.", "Martín S.", "Daniel N.", "Alejandro V.", "Manuel B.", "Álvaro J."];
-        const namesClass2 = ["Pablo M.", "Sergio T.", "Jorge R.", "Iván L.", "Carlos V.", "Miguel B.", "David A.", "Álex J.", "Bruno F.", "Óliver S."];
-        const namesClass3 = ["Javier R.", "Héctor M.", "Rubén G.", "Víctor S.", "Raúl F.", "Isaac L.", "Samuel B.", "Ismael A.", "Francisco T.", "José H."];
+        // Base de datos de alumnos
+        const namesClass1 = ["Hugo T.", "Sofia M.", "Mateo R.", "Leo G.", "Lucas P.", "Martin S.", "Daniel N.", "Alejandro V.", "Manuel B.", "Alvaro J."];
+        const namesClass2 = ["Pablo M.", "Sergio T.", "Jorge R.", "Ivan L.", "Carlos V.", "Miguel B.", "David A.", "Alex J.", "Bruno F.", "Oliver S."];
+        const namesClass3 = ["Javier R.", "Hector M.", "Ruben G.", "Victor S.", "Raul F.", "Isaac L.", "Samuel B.", "Ismael A.", "Francisco T.", "Jose H."];
 
-        const motorProfiles = ["Especialista Locomoción", "Destreza Manipulativa", "Control de Estabilidad", "Perfil Equilibrado"];
-        const learningStyles = ["Reto Individual", "Cooperativo", "Descubrimiento Guiado", "Resolución de Problemas"];
+        const motorProfiles = ["Especialista Locomocion", "Destreza Manipulativa", "Control de Estabilidad", "Perfil Equilibrado"];
+        const learningStyles = ["Reto Individual", "Cooperativo", "Descubrimiento Guiado", "Resolucion de Problemas"];
         const currentMissions = ["El vuelo del proyectil", "La senda del ninja", "Equilibrio en el abismo", "El circuito de postas"];
         
-        const ludotecaJuegos = [
-            { id: 1, name: "Canguros al rescate", objetivo: "Locomoción (Saltos plyométricos)", desc: "Los niños deben cruzar el espacio saltando a pies juntos dentro de aros. Si se cae un aro, un compañero debe reponerlo.", variante: "Añadir lanzamientos de saquitos de arena mientras saltan.", icono: "🦘" },
-            { id: 2, name: "El Pañuelo Multimotor", objetivo: "Velocidad de reacción y Agilidad", desc: "Al decir su número, los alumnos deben salir corriendo, esquivar tres conos en zigzag y atrapar el pañuelo.", variante: "El regreso al origen se hace con cuadrupedia o pata coja.", icono: "🎽" },
-            { id: 3, name: "Cazadores de Cohetes", objetivo: "Manipulación (Lanzamiento adaptado)", desc: "Lanzar jabalinas de espuma o vortex intentando que pasen a través de grandes aros suspendidos del techo.", variante: "Aumentar la distancia de tiro gradualmente según aciertos.", icono: "🚀" }
-        ];
-
         const generateClassData = (className, namesArray, stage) => {
             return {
                 name: className,
@@ -56,23 +57,23 @@
                         estabilidad: 45 + (index * 6) % 50,
                         manipulacion: 35 + (index * 11) % 60
                     },
-                    // Datos del Laboratorio Motor y Fisiológico
                     fitness: {
-                        salto: 110 + (index * 5) % 40, // cm
-                        sprint: 4.5 + (index * 0.1) % 1.2, // segundos en 20m
-                        rpe: 3 + (index * 2) % 6, // Escala de Borg adaptada (1-10)
-                        sueno: index % 2 === 0 ? "Óptimo" : "Regular"
+                        salto: 110 + (index * 5) % 40,
+                        sprint: 4.5 + (index * 0.1) % 1.2,
+                        rpe: 3 + (index * 2) % 6,
+                        sueno: index % 2 === 0 ? "Optimo" : "Regular"
                     }
                 }))
             };
         };
 
         const classesDataset = [
-            generateClassData("Clase A (Fundamentos)", namesClass1, "6-7 años"),
-            generateClassData("Clase B (Consolidación)", namesClass2, "8-9 años"),
-            generateClassData("Clase C (Especialización)", namesClass3, "10-12 años")
+            generateClassData("Clase A (Fundamentos)", namesClass1, "6-7 anos"),
+            generateClassData("Clase B (Consolidacion)", namesClass2, "8-9 anos"),
+            generateClassData("Clase C (Especializacion)", namesClass3, "10-12 anos")
         ];
 
+        // Componente del Gráfico Radar
         const SkillsRadar = ({ locomocion, estabilidad, manipulacion, isDarkMode }) => {
             const size = 200;
             const center = size / 2;
@@ -82,52 +83,67 @@
             const getPoint = (value, angle) => {
                 const rad = (angle * Math.PI) / 180;
                 const r = (value / 100) * maxRadius;
-                return `${center + r * Math.cos(rad)},${center + r * Math.sin(rad)}`;
+                const x = center + r * Math.cos(rad);
+                const y = center + r * Math.sin(rad);
+                return { x, y, str: `${x},${y}` };
             };
 
-            const pLocomocion = getPoint(locomocion, -90);
-            const pEstabilidad = getPoint(estabilidad, 30);
-            const pManipulacion = getPoint(manipulacion, 150);
+            const pLoc = getPoint(locomocion, -90);
+            const pEst = getPoint(estabilidad, 30);
+            const pMan = getPoint(manipulacion, 150);
+            
+            const maxLoc = getPoint(100, -90);
+            const maxEst = getPoint(100, 30);
+            const maxMan = getPoint(100, 150);
 
             return (
                 <div className="relative flex justify-center items-center my-2">
                     <svg width={size} height={size} className="overflow-visible">
-                        {[20, 40, 60, 80, 100].map((level) => (
-                            <polygon key={level} points={`${getPoint(level, -90)} ${getPoint(level, 30)} ${getPoint(level, 150)}`} fill="none" stroke={gridColor} strokeWidth="1" strokeDasharray={level === 100 ? "0" : "3 3"} />
-                        ))}
-                        <line x1={center} y1={center} x2={getPoint(100, -90).split(',')[0]} y2={getPoint(100, -90).split(',')[1]} stroke={gridColor} strokeWidth="1.5" />
-                        <line x1={center} y1={center} x2={getPoint(100, 30).split(',')[0]} y2={getPoint(100, 30).split(',')[1]} stroke={gridColor} strokeWidth="1.5" />
-                        <line x1={center} y1={center} x2={getPoint(100, 150).split(',')[0]} y2={getPoint(100, 150).split(',')[1]} stroke={gridColor} strokeWidth="1.5" />
-                        <polygon points={`${pLocomocion} ${pEstabilidad} ${pManipulacion}`} fill="rgba(79, 70, 229, 0.35)" stroke="#4f46e5" strokeWidth="2.5" className="transition-all duration-300" />
-                        <circle cx={pLocomocion.split(',')[0]} cy={pLocomocion.split(',')[1]} r="4" fill="#4f46e5" />
-                        <circle cx={pEstabilidad.split(',')[0]} cy={pEstabilidad.split(',')[1]} r="4" fill="#10b981" />
-                        <circle cx={pManipulacion.split(',')[0]} cy={pManipulacion.split(',')[1]} r="4" fill="#f43f5e" />
+                        {[20, 40, 60, 80, 100].map((level) => {
+                            const l1 = getPoint(level, -90).str;
+                            const l2 = getPoint(level, 30).str;
+                            const l3 = getPoint(level, 150).str;
+                            return (
+                                <polygon key={level} points={`${l1} ${l2} ${l3}`} fill="none" stroke={gridColor} strokeWidth="1" strokeDasharray={level === 100 ? "0" : "3 3"} />
+                            )
+                        })}
+                        
+                        <line x1={center} y1={center} x2={maxLoc.x} y2={maxLoc.y} stroke={gridColor} strokeWidth="1.5" />
+                        <line x1={center} y1={center} x2={maxEst.x} y2={maxEst.y} stroke={gridColor} strokeWidth="1.5" />
+                        <line x1={center} y1={center} x2={maxMan.x} y2={maxMan.y} stroke={gridColor} strokeWidth="1.5" />
+                        
+                        <polygon points={`${pLoc.str} ${pEst.str} ${pMan.str}`} fill="rgba(79, 70, 229, 0.35)" stroke="#4f46e5" strokeWidth="2.5" className="transition-all duration-300" />
+                        <circle cx={pLoc.x} cy={pLoc.y} r="4" fill="#4f46e5" />
+                        <circle cx={pEst.x} cy={pEst.y} r="4" fill="#10b981" />
+                        <circle cx={pMan.x} cy={pMan.y} r="4" fill="#f43f5e" />
                     </svg>
-                    <div className="absolute top-0 text-[10px] font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-2 py-0.5 rounded-full">Locomoción</div>
-                    <div className="absolute bottom-2 right-0 text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full">Estabilidad</div>
-                    <div className="absolute bottom-2 left-0 text-[10px] font-bold text-rose-600 bg-rose-50 dark:bg-rose-950 px-2 py-0.5 rounded-full">Manipulación</div>
+                    <div className="absolute top-0 text-[10px] font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-2 py-0.5 rounded-full border border-indigo-200">Locomocion</div>
+                    <div className="absolute bottom-2 right-0 text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded-full border border-emerald-200">Estabilidad</div>
+                    <div className="absolute bottom-2 left-0 text-[10px] font-bold text-rose-600 bg-rose-50 dark:bg-rose-950 px-2 py-0.5 rounded-full border border-rose-200">Manipulacion</div>
                 </div>
             );
         };
 
-        // --- VISTA 1: FICHA ALUMNO ---
+        // VISTA 1: FICHA ALUMNO
         const AthleteProfile = ({ selectedClass, selectedAthlete, onClassChange, onAthleteChange, isDarkMode }) => {
             const totalScore = Math.round((selectedAthlete.skills.locomocion + selectedAthlete.skills.estabilidad + selectedAthlete.skills.manipulacion) / 3);
 
             return (
                 <div className="space-y-6">
                     <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row gap-4">
-                        <select value={classesDataset.indexOf(selectedClass)} onChange={(e) => onClassChange(parseInt(e.target.value))} className="flex-1 bg-slate-50 dark:bg-slate-800 text-sm font-bold p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100">
+                        <select value={classesDataset.indexOf(selectedClass)} onChange={(e) => onClassChange(parseInt(e.target.value, 10))} className="flex-1 bg-slate-50 dark:bg-slate-800 text-sm font-bold p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100">
                             {classesDataset.map((c, idx) => <option key={idx} value={idx}>{c.name}</option>)}
                         </select>
-                        <select value={selectedAthlete.id} onChange={(e) => onAthleteChange(parseInt(e.target.value))} className="flex-1 bg-indigo-50/50 dark:bg-indigo-950/20 text-sm font-bold text-indigo-700 dark:text-indigo-400 p-2.5 rounded-xl border border-indigo-100/50 dark:border-indigo-900/50">
+                        <select value={selectedAthlete.id} onChange={(e) => onAthleteChange(parseInt(e.target.value, 10))} className="flex-1 bg-indigo-50/50 dark:bg-indigo-950/20 text-sm font-bold text-indigo-700 dark:text-indigo-400 p-2.5 rounded-xl border border-indigo-100/50 dark:border-indigo-900/50">
                             {selectedClass.athletes.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
                         </select>
                     </div>
 
                     <div className="bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-900 p-6 rounded-3xl shadow-lg text-white flex flex-col md:flex-row items-center justify-between gap-6">
                         <div className="flex items-center gap-4">
-                            <div className="w-16 h-16 bg-gradient-to-tr from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center text-3xl shadow-inner">🏃</div>
+                            <div className="w-16 h-16 bg-gradient-to-tr from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center text-xl font-black shadow-inner">
+                                {selectedAthlete.id}
+                            </div>
                             <div>
                                 <h2 className="text-2xl font-black tracking-tight">{selectedAthlete.name}</h2>
                                 <p className="text-indigo-200 text-xs font-semibold">{selectedClass.stage}</p>
@@ -138,7 +154,7 @@
                         </div>
                         <div className="flex gap-4">
                             <div className="bg-slate-800/60 p-3 rounded-2xl border border-white/10 text-center">
-                                <div className="text-[10px] text-indigo-300 font-bold uppercase">Índice Motor</div>
+                                <div className="text-[10px] text-indigo-300 font-bold uppercase">Indice Motor</div>
                                 <div className="text-2xl font-black">{totalScore}/100</div>
                             </div>
                             <div className="bg-slate-800/60 p-3 rounded-2xl border border-white/10 text-center">
@@ -150,15 +166,15 @@
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col items-center">
-                            <h3 className="text-sm font-bold text-slate-500 uppercase w-full mb-2">📊 Patrones Motores</h3>
+                            <h3 className="text-sm font-bold text-slate-500 uppercase w-full mb-2">[+] Patrones Motores</h3>
                             <SkillsRadar locomocion={selectedAthlete.skills.locomocion} estabilidad={selectedAthlete.skills.estabilidad} manipulacion={selectedAthlete.skills.manipulacion} isDarkMode={isDarkMode} />
                         </div>
                         <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800">
-                            <h3 className="text-sm font-bold text-slate-500 uppercase mb-4">🎯 Misión Didáctica</h3>
+                            <h3 className="text-sm font-bold text-slate-500 uppercase mb-4">[O] Mision Didactica</h3>
                             <div className="bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 p-4 rounded-2xl mb-4">
-                                <div className="text-[10px] font-bold text-indigo-600 uppercase">Foco de la Sesión</div>
+                                <div className="text-[10px] font-bold text-indigo-600 uppercase">Foco de la Sesion</div>
                                 <div className="font-bold text-slate-800 dark:text-white text-base mt-1">{selectedAthlete.mission}</div>
-                                <div className="text-xs text-slate-500 mt-2">Estilo pedagógico: <span className="font-bold text-indigo-500">{selectedAthlete.style}</span></div>
+                                <div className="text-xs text-slate-500 mt-2">Estilo pedagogico: <span className="font-bold text-indigo-500">{selectedAthlete.style}</span></div>
                             </div>
                         </div>
                     </div>
@@ -166,7 +182,7 @@
             );
         };
 
-        // --- VISTA 2: EVALUACIÓN DOCENTE ---
+        // VISTA 2: EVALUACIÓN DOCENTE
         const CoachDashboard = ({ selectedClass, onClassChange }) => {
             const [progress, setProgress] = useState({});
             
@@ -178,14 +194,14 @@
                 <div className="space-y-6">
                     <div className="bg-slate-900 p-6 rounded-3xl text-white flex flex-col sm:flex-row justify-between items-center gap-4">
                         <div>
-                            <h2 className="text-xl font-black">📋 Cuaderno Docente</h2>
-                            <p className="text-slate-400 text-xs">Gestión de Logros Curriculares</p>
+                            <h2 className="text-xl font-black">Cuaderno Docente</h2>
+                            <p className="text-slate-400 text-xs">Gestion de Logros Curriculares</p>
                         </div>
                         <div className="flex gap-2">
-                            <select value={classesDataset.indexOf(selectedClass)} onChange={(e) => onClassChange(parseInt(e.target.value))} className="bg-slate-800 text-xs font-bold p-2.5 rounded-xl border border-slate-700 text-white">
+                            <select value={classesDataset.indexOf(selectedClass)} onChange={(e) => onClassChange(parseInt(e.target.value, 10))} className="bg-slate-800 text-xs font-bold p-2.5 rounded-xl border border-slate-700 text-white">
                                 {classesDataset.map((c, idx) => <option key={idx} value={idx}>{c.name}</option>)}
                             </select>
-                            <button className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-xl text-xs font-bold transition-colors">Exportar Boletín 📥</button>
+                            <button className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-xl text-xs font-bold transition-colors">Exportar Datos</button>
                         </div>
                     </div>
 
@@ -197,7 +213,7 @@
                                     <div key={athlete.id} className="p-4 flex flex-col md:flex-row justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/30">
                                         <div>
                                             <div className="flex items-center gap-2">
-                                                <span className="text-xs font-mono text-slate-400">#{athlete.id}</span>
+                                                <span className="text-xs font-mono text-slate-400">ID-{athlete.id}</span>
                                                 <h4 className="font-bold text-slate-900 dark:text-white">{athlete.name}</h4>
                                                 <span className="px-2 py-0.5 rounded text-[9px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">RPE: {athlete.fitness.rpe}</span>
                                             </div>
@@ -205,7 +221,7 @@
                                         </div>
                                         <div className="flex gap-2">
                                             <button onClick={() => handleProgress(athlete.id, 'proceso')} className={`px-3 py-1.5 rounded-lg text-[10px] font-bold border ${currentStatus === 'proceso' ? 'bg-amber-50 border-amber-400 text-amber-700' : 'border-slate-200 text-slate-400'}`}>En Proceso</button>
-                                            <button onClick={() => handleProgress(athlete.id, 'adquirido')} className={`px-3 py-1.5 rounded-lg text-[10px] font-bold border ${currentStatus === 'adquirido' ? 'bg-emerald-50 border-emerald-400 text-emerald-700' : 'border-slate-200 text-slate-400'}`}>Adquirido ✅</button>
+                                            <button onClick={() => handleProgress(athlete.id, 'adquirido')} className={`px-3 py-1.5 rounded-lg text-[10px] font-bold border ${currentStatus === 'adquirido' ? 'bg-emerald-50 border-emerald-400 text-emerald-700' : 'border-slate-200 text-slate-400'}`}>Adquirido [OK]</button>
                                         </div>
                                     </div>
                                 );
@@ -216,73 +232,75 @@
             );
         };
 
-        // --- VISTA 3: LABORATORIO CAFYD (Batería ALPHA) ---
+        // VISTA 3: LABORATORIO (Batería ALPHA)
         const FitnessLab = ({ selectedClass, selectedAthlete, onAthleteChange }) => {
-            const getPercentilColor = (value, tipo) => {
-                if (tipo === 'salto') return value > 130 ? 'text-emerald-500' : value < 115 ? 'text-rose-500' : 'text-amber-500';
-                if (tipo === 'sprint') return value < 4.8 ? 'text-emerald-500' : value > 5.2 ? 'text-rose-500' : 'text-amber-500';
+            const saltoValue = selectedAthlete.fitness.salto;
+            const sprintValue = selectedAthlete.fitness.sprint;
+            
+            const saltoPercent = Math.min((saltoValue / 160) * 100, 100);
+            const sprintPercent = Math.min((4.0 / sprintValue) * 100, 100);
+
+            const getColor = (val, type) => {
+                if (type === 'salto') return val > 130 ? 'text-emerald-500' : val < 115 ? 'text-rose-500' : 'text-amber-500';
+                return val < 4.8 ? 'text-emerald-500' : val > 5.2 ? 'text-rose-500' : 'text-amber-500';
             };
 
-            const getPercentilBg = (value, tipo) => {
-                if (tipo === 'salto') return value > 130 ? 'bg-emerald-50 border-emerald-200' : value < 115 ? 'bg-rose-50 border-rose-200' : 'bg-amber-50 border-amber-200';
-                if (tipo === 'sprint') return value < 4.8 ? 'bg-emerald-50 border-emerald-200' : value > 5.2 ? 'bg-rose-50 border-rose-200' : 'bg-amber-50 border-amber-200';
+            const getBg = (val, type) => {
+                if (type === 'salto') return val > 130 ? 'bg-emerald-50 border-emerald-200' : val < 115 ? 'bg-rose-50 border-rose-200' : 'bg-amber-50 border-amber-200';
+                return val < 4.8 ? 'bg-emerald-50 border-emerald-200' : val > 5.2 ? 'bg-rose-50 border-rose-200' : 'bg-amber-50 border-amber-200';
             };
 
             return (
                 <div className="space-y-6">
                     <div className="bg-violet-900 p-6 rounded-3xl shadow-lg text-white flex justify-between items-center">
                         <div>
-                            <h2 className="text-xl font-black flex items-center gap-2">🔬 Laboratorio de Rendimiento</h2>
-                            <p className="text-violet-200 text-xs mt-1">Batería ALPHA-Fitness & Control Fisiológico</p>
+                            <h2 className="text-xl font-black">Laboratorio de Rendimiento</h2>
+                            <p className="text-violet-200 text-xs mt-1">Bateria ALPHA-Fitness</p>
                         </div>
-                        <select value={selectedAthlete.id} onChange={(e) => onAthleteChange(parseInt(e.target.value))} className="bg-violet-950 text-sm font-bold text-violet-100 p-2.5 rounded-xl border border-violet-800">
+                        <select value={selectedAthlete.id} onChange={(e) => onAthleteChange(parseInt(e.target.value, 10))} className="bg-violet-950 text-sm font-bold text-violet-100 p-2.5 rounded-xl border border-violet-800">
                             {selectedClass.athletes.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
                         </select>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Panel Condicional: ALPHA FITNESS */}
                         <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
-                            <h3 className="text-sm font-bold text-slate-800 dark:text-white uppercase mb-4">Métricas Condicionales</h3>
-                            
+                            <h3 className="text-sm font-bold text-slate-800 dark:text-white uppercase mb-4">Metricas Condicionales</h3>
                             <div className="space-y-4">
-                                <div className={`p-4 rounded-2xl border ${getPercentilBg(selectedAthlete.fitness.salto, 'salto')} dark:bg-slate-800/50 dark:border-slate-700`}>
+                                <div className={`p-4 rounded-2xl border ${getBg(saltoValue, 'salto')} dark:bg-slate-800/50 dark:border-slate-700`}>
                                     <div className="flex justify-between items-center">
-                                        <span className="text-xs font-bold uppercase text-slate-500">Salto Horizontal (Potencia)</span>
-                                        <span className={`text-xl font-black ${getPercentilColor(selectedAthlete.fitness.salto, 'salto')}`}>{selectedAthlete.fitness.salto} cm</span>
+                                        <span className="text-xs font-bold uppercase text-slate-500">Salto (Potencia)</span>
+                                        <span className={`text-xl font-black ${getColor(saltoValue, 'salto')}`}>{saltoValue} cm</span>
                                     </div>
-                                    <div className="w-full bg-white dark:bg-slate-700 rounded-full h-2 mt-3">
-                                        <div className="bg-slate-400 h-2 rounded-full" style={{ width: `${Math.min((selectedAthlete.fitness.salto / 160) * 100, 100)}%` }}></div>
+                                    <div className="w-full bg-white dark:bg-slate-700 rounded-full h-2 mt-3 overflow-hidden">
+                                        <div className="bg-slate-400 h-full rounded-full" style={{ width: `${saltoPercent}%` }}></div>
                                     </div>
                                 </div>
 
-                                <div className={`p-4 rounded-2xl border ${getPercentilBg(selectedAthlete.fitness.sprint, 'sprint')} dark:bg-slate-800/50 dark:border-slate-700`}>
+                                <div className={`p-4 rounded-2xl border ${getBg(sprintValue, 'sprint')} dark:bg-slate-800/50 dark:border-slate-700`}>
                                     <div className="flex justify-between items-center">
                                         <span className="text-xs font-bold uppercase text-slate-500">Sprint 20m (Velocidad)</span>
-                                        <span className={`text-xl font-black ${getPercentilColor(selectedAthlete.fitness.sprint, 'sprint')}`}>{selectedAthlete.fitness.sprint} s</span>
+                                        <span className={`text-xl font-black ${getColor(sprintValue, 'sprint')}`}>{sprintValue} s</span>
                                     </div>
-                                    <div className="w-full bg-white dark:bg-slate-700 rounded-full h-2 mt-3 flex justify-end">
-                                        <div className="bg-slate-400 h-2 rounded-full" style={{ width: `${Math.min((4.0 / selectedAthlete.fitness.sprint) * 100, 100)}%` }}></div>
+                                    <div className="w-full bg-white dark:bg-slate-700 rounded-full h-2 mt-3 overflow-hidden">
+                                        <div className="bg-slate-400 h-full rounded-full" style={{ width: `${sprintPercent}%` }}></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Panel Carga Interna */}
                         <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between">
                             <div>
-                                <h3 className="text-sm font-bold text-slate-800 dark:text-white uppercase mb-4">Monitorización de Carga</h3>
+                                <h3 className="text-sm font-bold text-slate-800 dark:text-white uppercase mb-4">Monitorizacion de Carga</h3>
                                 <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 mb-4">
-                                    <div className="text-[10px] font-bold text-slate-400 uppercase">RPE Percibido (Escala Infantil 1-10)</div>
+                                    <div className="text-[10px] font-bold text-slate-400 uppercase">RPE Percibido (Escala 1-10)</div>
                                     <div className="flex items-end gap-2 mt-1">
                                         <span className="text-3xl font-black text-indigo-600 dark:text-indigo-400">{selectedAthlete.fitness.rpe}</span>
                                         <span className="text-xs font-medium text-slate-500 mb-1">/ 10</span>
                                     </div>
-                                    <p className="text-[11px] text-slate-500 mt-2">Nivel de fatiga sistémica adecuado para la fase actual del microciclo.</p>
                                 </div>
                                 <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700">
-                                    <div className="text-[10px] font-bold text-slate-400 uppercase">Calidad del Sueño</div>
-                                    <div className="text-sm font-bold text-slate-700 dark:text-slate-300 mt-1">🔋 Estado: {selectedAthlete.fitness.sueno}</div>
+                                    <div className="text-[10px] font-bold text-slate-400 uppercase">Calidad del Sueno</div>
+                                    <div className="text-sm font-bold text-slate-700 dark:text-slate-300 mt-1">Estado: {selectedAthlete.fitness.sueno}</div>
                                 </div>
                             </div>
                         </div>
@@ -291,7 +309,7 @@
             );
         };
 
-        // --- APP PRINCIPAL ---
+        // APP PRINCIPAL
         function DecaKidsApp() {
             const [currentView, setCurrentView] = useState('athlete');
             const [isDarkMode, setIsDarkMode] = useState(false);
@@ -317,14 +335,28 @@
                                     <h1 className="text-lg font-black tracking-tight">Deca<span className="text-indigo-600">Kids</span> <span className="text-xs text-slate-400 font-mono">PRO</span></h1>
                                 </div>
                                 <nav className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-bold overflow-x-auto hide-scrollbar max-w-full">
-                                    <button onClick={() => setCurrentView('athlete')} className={`px-3 py-2 rounded-lg whitespace-nowrap transition-all ${currentView === 'athlete' ? 'bg-white dark:bg-slate-900 shadow text-indigo-600' : 'text-slate-500'}`}>👤 Ficha</button>
-                                    <button onClick={() => setCurrentView('lab')} className={`px-3 py-2 rounded-lg whitespace-nowrap transition-all ${currentView === 'lab' ? 'bg-white dark:bg-slate-900 shadow text-violet-600' : 'text-slate-500'}`}>🔬 Lab. Motor</button>
-                                    <button onClick={() => setCurrentView('coach')} className={`px-3 py-2 rounded-lg whitespace-nowrap transition-all ${currentView === 'coach' ? 'bg-white dark:bg-slate-900 shadow text-indigo-600' : 'text-slate-500'}`}>📋 Docente</button>
+                                    <button onClick={() => setCurrentView('athlete')} className={`px-3 py-2 rounded-lg whitespace-nowrap transition-all ${currentView === 'athlete' ? 'bg-white dark:bg-slate-900 shadow text-indigo-600' : 'text-slate-500'}`}>[1] Ficha</button>
+                                    <button onClick={() => setCurrentView('lab')} className={`px-3 py-2 rounded-lg whitespace-nowrap transition-all ${currentView === 'lab' ? 'bg-white dark:bg-slate-900 shadow text-violet-600' : 'text-slate-500'}`}>[2] Lab. Motor</button>
+                                    <button onClick={() => setCurrentView('coach')} className={`px-3 py-2 rounded-lg whitespace-nowrap transition-all ${currentView === 'coach' ? 'bg-white dark:bg-slate-900 shadow text-indigo-600' : 'text-slate-500'}`}>[3] Docente</button>
                                 </nav>
                                 <button onClick={() => setIsDarkMode(!isDarkMode)} className="p-2 text-sm bg-slate-100 dark:bg-slate-800 rounded-full hidden md:block">
-                                    {isDarkMode ? '☀️' : '🌙'}
+                                    O/C
                                 </button>
                             </div>
                         </header>
 
-                        <main className="max-w-5xl mx-auto px-4 py-
+                        <main className="max-w-5xl mx-auto px-4 py-6">
+                            {currentView === 'athlete' && <AthleteProfile selectedClass={activeClass} selectedAthlete={activeAthlete} onClassChange={handleClassChange} onAthleteChange={setAthleteId} isDarkMode={isDarkMode} />}
+                            {currentView === 'lab' && <FitnessLab selectedClass={activeClass} selectedAthlete={activeAthlete} onAthleteChange={setAthleteId} />}
+                            {currentView === 'coach' && <CoachDashboard selectedClass={activeClass} onClassChange={handleClassChange} />}
+                        </main>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<DecaKidsApp />);
+    </script>
+</body>
+</html>
