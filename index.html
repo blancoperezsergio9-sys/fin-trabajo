@@ -10,8 +10,6 @@
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     
-    <script src="https://unpkg.com/lucide-react"></script>
-    
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <style>
@@ -21,29 +19,15 @@
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            500: '#4f46e5',
-                        }
-                    }
-                }
-            }
+            theme: { extend: { colors: { brand: { 500: '#4f46e5' } } } }
         }
     </script>
 </head>
 <body class="bg-slate-50 text-slate-900 transition-colors duration-200">
-
     <div id="root"></div>
-
+    
     <script type="text/babel">
         const { useState, useEffect } = React;
-        const {
-            User, Users, Activity, Shield, Trophy, AlertCircle, CheckCircle2,
-            Target, Info, Rocket, Zap, RefreshCw, Check, Sparkles, Flame,
-            Sun, Moon, BookOpen, Award, Smile, Heart
-        } = LucideReact;
 
         const mockData = {
             coach: {
@@ -57,22 +41,22 @@
                 ]
             },
             badges: [
-                { id: 1, name: "Insignia de Vuelo", desc: "Salto con pértiga adaptado", icon: Rocket, color: "bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-900/30 dark:text-fuchsia-400", border: "border-fuchsia-200 dark:border-fuchsia-800" },
-                { id: 2, name: "Brazo Biónico", desc: "Lanzamiento de jabalina-espuma", icon: Target, color: "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400", border: "border-amber-200 dark:border-amber-800" },
-                { id: 3, name: "Pies de Rayo", desc: "Circuito de agilidad superado", icon: Zap, color: "bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400", border: "border-cyan-200 dark:border-cyan-800" }
+                { id: 1, name: "Insignia de Vuelo", desc: "Salto con pértiga adaptado", icon: "🚀", color: "bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-900/30 dark:text-fuchsia-400", border: "border-fuchsia-200 dark:border-fuchsia-800" },
+                { id: 2, name: "Brazo Biónico", desc: "Lanzamiento de jabalina-espuma", icon: "🎯", color: "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400", border: "border-amber-200 dark:border-amber-800" },
+                { id: 3, name: "Pies de Rayo", desc: "Circuito de agilidad superado", icon: "⚡", color: "bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400", border: "border-cyan-200 dark:border-cyan-800" }
             ],
             family: {
                 feed: [
-                    { id: 1, child: "Leo", text: "Dominó la técnica de salto continuo en 'El desafío del canguro'. ¡Excelente control postural!", time: "Hace 2 horas", icon: Award, color: "text-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30" },
-                    { id: 2, child: "Leo", text: "Completó la sesión multideporte con una gran sonrisa y compañerismo.", time: "Ayer", icon: Smile, color: "text-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30" },
-                    { id: 3, child: "Leo", text: "Mejoró su transferencia de fuerza en lanzamientos. ¡Brazo biónico en proceso!", time: "Hace 3 días", icon: Sparkles, color: "text-violet-500", bg: "bg-violet-100 dark:bg-violet-900/30" }
+                    { id: 1, child: "Leo", text: "Dominó la técnica de salto continuo en 'El desafío del canguro'. ¡Excelente control postural!", time: "Hace 2 horas", icon: "🏅", color: "text-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30" },
+                    { id: 2, child: "Leo", text: "Completó la sesión multideporte con una gran sonrisa y compañerismo.", time: "Ayer", icon: "😁", color: "text-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30" },
+                    { id: 3, child: "Leo", text: "Mejoró su transferencia de fuerza en lanzamientos. ¡Brazo biónico en proceso!", time: "Hace 3 días", icon: "✨", color: "text-violet-500", bg: "bg-violet-100 dark:bg-violet-900/30" }
                 ],
                 tips: [
                     "La ciencia demuestra que practicar múltiples deportes antes de los 12 años reduce el riesgo de lesiones por sobreuso en un 50%.",
                     "El juego libre desarrolla la creatividad motriz. Deja que inventen sus propias reglas en el parque.",
                     "El objetivo en estas edades no es ganar medallas, sino aprender a moverse bien y construir un 'alfabetismo físico' sólido.",
                     "Evita comparar a tu hijo con otros. El desarrollo biológico varía enormemente; algunos maduran antes, pero el éxito a largo plazo premia la constancia y la diversión.",
-                    "La especialización temprana aumenta el riesgo de 'burnout' (agotamiento mental). ¡La variedad es la clave!"
+                    "La especialización temprana aumenta el riesgo de burnout. ¡La variedad es la clave!"
                 ]
             }
         };
@@ -146,7 +130,7 @@
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col items-center">
                             <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2 flex items-center gap-2 w-full">
-                                <Target className="w-6 h-6 text-indigo-500" /> Radar de Habilidades
+                                <span>🎯</span> Radar de Habilidades
                             </h3>
                             <SkillsRadar {...skills} isDarkMode={isDarkMode} />
                             <div className="w-full space-y-4 mt-6 bg-gray-50 dark:bg-slate-800/50 p-4 rounded-2xl">
@@ -167,21 +151,18 @@
 
                         <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800">
                             <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
-                                <Trophy className="w-6 h-6 text-amber-500" /> Insignias Recientes
+                                <span>🏆</span> Insignias Recientes
                             </h3>
                             <div className="grid grid-cols-1 gap-3">
-                                {mockData.badges.map(badge => {
-                                    const Icon = badge.icon;
-                                    return (
-                                        <div key={badge.id} className={`flex items-center gap-4 p-3 rounded-2xl border ${badge.border} bg-white dark:bg-slate-900`}>
-                                            <div className={`p-3 rounded-xl ${badge.color}`}><Icon className="w-6 h-6" /></div>
-                                            <div>
-                                                <h4 className="font-bold text-gray-800 dark:text-slate-100">{badge.name}</h4>
-                                                <p className="text-sm text-gray-500 dark:text-slate-400">{badge.desc}</p>
-                                            </div>
+                                {mockData.badges.map(badge => (
+                                    <div key={badge.id} className={`flex items-center gap-4 p-3 rounded-2xl border ${badge.border} bg-white dark:bg-slate-900`}>
+                                        <div className={`p-3 rounded-xl ${badge.color} text-2xl flex items-center justify-center`}>{badge.icon}</div>
+                                        <div>
+                                            <h4 className="font-bold text-gray-800 dark:text-slate-100">{badge.name}</h4>
+                                            <p className="text-sm text-gray-500 dark:text-slate-400">{badge.desc}</p>
                                         </div>
-                                    );
-                                })}
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -198,16 +179,16 @@
                     <div className="bg-slate-900 dark:bg-black p-6 rounded-3xl shadow-lg text-white flex items-center justify-between border border-slate-800">
                         <div>
                             <h2 className="text-2xl font-black flex items-center gap-2">
-                                <Flame className="w-6 h-6 text-orange-500" /> {mockData.coach.name}
+                                <span>🔥</span> {mockData.coach.name}
                             </h2>
-                            <p className="text-slate-400 font-medium mt-1">{mockData.coach.team} | Modo Pista (Registro Rápido)</p>
+                            <p className="text-slate-400 font-medium mt-1">{mockData.coach.team} | Modo Pista</p>
                         </div>
                     </div>
 
                     <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800 overflow-hidden">
                         <div className="p-6 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/30">
                             <h3 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
-                                <Activity className="w-6 h-6 text-indigo-500" /> Misiones de Hoy
+                                <span>📊</span> Misiones de Hoy
                             </h3>
                         </div>
 
@@ -229,15 +210,15 @@
 
                                         <div className="flex items-center gap-2 sm:gap-3 w-full xl:w-auto">
                                             <button onClick={() => handleProgress(athlete.id, 'proceso')} className={`flex-1 flex flex-col items-center p-2 rounded-xl border-2 transition-all ${current === 'proceso' ? 'bg-amber-100 border-amber-400 text-amber-700' : 'border-gray-100 text-gray-400'}`}>
-                                                <RefreshCw className="w-5 h-5" />
+                                                <span className="text-xl">🔄</span>
                                                 <span className="text-[10px] font-bold mt-1">En proceso</span>
                                             </button>
                                             <button onClick={() => handleProgress(athlete.id, 'dominado')} className={`flex-1 flex flex-col items-center p-2 rounded-xl border-2 transition-all ${current === 'dominado' ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : 'border-gray-100 text-gray-400'}`}>
-                                                <Check className="w-5 h-5" />
+                                                <span className="text-xl">✅</span>
                                                 <span className="text-[10px] font-bold mt-1">Dominado</span>
                                             </button>
                                             <button onClick={() => handleProgress(athlete.id, 'excelente')} className={`flex-1 flex flex-col items-center p-2 rounded-xl border-2 transition-all ${current === 'excelente' ? 'bg-violet-100 border-violet-400 text-violet-700' : 'border-gray-100 text-gray-400'}`}>
-                                                <Sparkles className="w-5 h-5" />
+                                                <span className="text-xl">✨</span>
                                                 <span className="text-[10px] font-bold mt-1">Excelente</span>
                                             </button>
                                         </div>
@@ -260,10 +241,10 @@
                         <div className="relative z-10">
                             <div className="flex items-center justify-between mb-3">
                                 <h2 className="text-xl font-black flex items-center gap-2">
-                                    <BookOpen className="w-6 h-6 text-teal-100" /> Píldora Educativa
+                                    <span>📖</span> Píldora Educativa
                                 </h2>
-                                <button onClick={nextTip} className="p-2 bg-white/20 rounded-full">
-                                    <RefreshCw className="w-4 h-4 text-white" />
+                                <button onClick={nextTip} className="p-2 bg-white/20 rounded-full text-xl leading-none">
+                                    🔄
                                 </button>
                             </div>
                             <p className="text-teal-50 font-medium text-lg">"{mockData.family.tips[tipIndex]}"</p>
@@ -272,27 +253,24 @@
 
                     <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-800">
                         <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-2">
-                            <Heart className="w-6 h-6 text-rose-500" /> Muro de Logros
+                            <span>❤️</span> Muro de Logros
                         </h3>
                         <div className="space-y-6">
-                            {mockData.family.feed.map((item) => {
-                                const Icon = item.icon;
-                                return (
-                                    <div key={item.id} className="flex gap-4 relative">
-                                        <div className="absolute left-6 top-12 bottom-[-24px] w-0.5 bg-gray-100 dark:bg-slate-800 last:hidden"></div>
-                                        <div className={`w-12 h-12 rounded-full flex items-center justify-center z-10 ${item.bg} ${item.color}`}>
-                                            <Icon className="w-6 h-6" />
-                                        </div>
-                                        <div className="flex-1 bg-gray-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-gray-100 dark:border-slate-700/50">
-                                            <div className="flex justify-between items-start mb-1">
-                                                <span className="font-bold text-gray-900 dark:text-white">{item.child}</span>
-                                                <span className="text-xs font-medium text-gray-400">{item.time}</span>
-                                            </div>
-                                            <p className="text-gray-600 dark:text-slate-300 text-sm">{item.text}</p>
-                                        </div>
+                            {mockData.family.feed.map((item) => (
+                                <div key={item.id} className="flex gap-4 relative">
+                                    <div className="absolute left-6 top-12 bottom-[-24px] w-0.5 bg-gray-100 dark:bg-slate-800 last:hidden"></div>
+                                    <div className={`w-12 h-12 rounded-full flex items-center justify-center z-10 text-2xl ${item.bg} ${item.color}`}>
+                                        {item.icon}
                                     </div>
-                                );
-                            })}
+                                    <div className="flex-1 bg-gray-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-gray-100 dark:border-slate-700/50">
+                                        <div className="flex justify-between items-start mb-1">
+                                            <span className="font-bold text-gray-900 dark:text-white">{item.child}</span>
+                                            <span className="text-xs font-medium text-gray-400">{item.time}</span>
+                                        </div>
+                                        <p className="text-gray-600 dark:text-slate-300 text-sm">{item.text}</p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -304,9 +282,9 @@
             const [isDarkMode, setIsDarkMode] = useState(false);
 
             const navItems = [
-                { id: 'athlete', label: 'Atleta', icon: User },
-                { id: 'coach', label: 'Entrenador', icon: Activity },
-                { id: 'family', label: 'Familia', icon: Users }
+                { id: 'athlete', label: 'Atleta', icon: '👤' },
+                { id: 'coach', label: 'Entrenador', icon: '📋' },
+                { id: 'family', label: 'Familia', icon: '👨‍👩‍👧' }
             ];
 
             return (
@@ -316,37 +294,34 @@
                             <div className="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between gap-4">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-3">
-                                        <div className="bg-gradient-to-br from-indigo-500 to-violet-600 p-2.5 rounded-xl">
-                                            <Shield className="w-6 h-6 text-white" />
+                                        <div className="bg-gradient-to-br from-indigo-500 to-violet-600 p-2.5 rounded-xl text-white text-xl leading-none">
+                                            🛡️
                                         </div>
                                         <h1 className="text-2xl font-black text-gray-900 dark:text-white">
                                             Deca<span className="text-indigo-600">Kids</span>
                                         </h1>
                                     </div>
-                                    <button onClick={() => setIsDarkMode(!isDarkMode)} className="sm:hidden p-2 rounded-full bg-gray-100 dark:bg-slate-800">
-                                        {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                                    <button onClick={() => setIsDarkMode(!isDarkMode)} className="sm:hidden p-2 rounded-full bg-gray-100 dark:bg-slate-800 text-xl leading-none">
+                                        {isDarkMode ? '☀️' : '🌙'}
                                     </button>
                                 </div>
                                 <div className="flex items-center gap-4">
                                     <nav className="flex space-x-2 overflow-x-auto hide-scrollbar">
-                                        {navItems.map(item => {
-                                            const Icon = item.icon;
-                                            return (
-                                                <button
-                                                    key={item.id}
-                                                    onClick={() => setCurrentView(item.id)}
-                                                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold ${
-                                                        currentView === item.id ? 'bg-gray-900 dark:bg-indigo-500 text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-500'
-                                                    }`}
-                                                >
-                                                    <Icon className="w-4 h-4" />
-                                                    {item.label}
-                                                </button>
-                                            );
-                                        })}
+                                        {navItems.map(item => (
+                                            <button
+                                                key={item.id}
+                                                onClick={() => setCurrentView(item.id)}
+                                                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold ${
+                                                    currentView === item.id ? 'bg-gray-900 dark:bg-indigo-500 text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-500'
+                                                }`}
+                                            >
+                                                <span>{item.icon}</span>
+                                                {item.label}
+                                            </button>
+                                        ))}
                                     </nav>
-                                    <button onClick={() => setIsDarkMode(!isDarkMode)} className="hidden sm:block p-2.5 rounded-full bg-gray-100 dark:bg-slate-800">
-                                        {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                                    <button onClick={() => setIsDarkMode(!isDarkMode)} className="hidden sm:block p-2.5 rounded-full bg-gray-100 dark:bg-slate-800 text-xl leading-none">
+                                        {isDarkMode ? '☀️' : '🌙'}
                                     </button>
                                 </div>
                             </div>
